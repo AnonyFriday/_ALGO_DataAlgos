@@ -18,12 +18,19 @@ public class Main {
         list.addFirst(new Node(10));
         list.addFirst(new Node(10));
         list.addFirst(new Node(10));
+        list.addFirst(new Node(99));
         list.addLast(new Node(20));
         list.addLast(new Node(20));
         list.addLast(new Node(20));
+        list.addLast(new Node(99));
 
         // Testing Traverse
         list.traverse();
 
+        // Searching value 
+        System.out.println("First position: " + list.searchIterativeApproach(20));
+
+        // Clear the linked list
+//        list.clear();
     }
 }

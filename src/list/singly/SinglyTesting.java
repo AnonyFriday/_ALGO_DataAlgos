@@ -4,7 +4,7 @@
  */
 package list.singly;
 
-/** Create the Node
+/** Create the Node for the List data structure
  *
  * @author duyvu
  */
@@ -86,7 +86,11 @@ public class SinglyTesting {
     /**
      * Add the Node the end of the list
      *
-     * @param node
+     * The tail reference is pointing to the last object Node
+     * Set the nextNode of the last object Node to the newly added Node
+     * Set the tail reference pointing to the newly added Node
+     *
+     * @param node: newly created node
      */
     public void addLast(Node node) {
         if (node == null) {
@@ -105,6 +109,37 @@ public class SinglyTesting {
         this.count++;
     }
 
+    /** Search the Element using the Iterative Approach
+     *
+     * @param <T> : Represent any Object
+     * @param x : Represent the value or the Object (forcing to override the comparable function for the case of Object)
+     * @return the first position found in the linked list
+     */
+    public <T> int searchIterativeApproach(T x) {
+
+        // Predefine exceptions to ignore only 1 element and 0 element
+        if (this.head == null) {
+            return -1;
+        }
+        if (this.head.nextNode == null) {
+            return 0;
+        }
+
+        Node pointer = this.head;
+        int pos = 0;
+        while (pointer != null) {
+            if (pointer.getData().equals(x)) {
+                return pos;
+            } else {
+                pos++;
+                pointer = pointer.nextNode;
+            }
+        }
+        return pos;
+    }
+
+    
+    
     /**
      * Traverse the whole link list
      */
@@ -114,6 +149,7 @@ public class SinglyTesting {
         Node pointer = head;
 
         // Traversing until reaching null pointer at the tail
+        // - pointing to the next object Node stored inside the pointer.nextNode
         while (pointer != null) {
             System.out.println("Node: " + pointer.getData());
             pointer = pointer.nextNode;
