@@ -109,6 +109,24 @@ public class SinglyTesting {
         this.count++;
     }
 
+    // TODO: remove first element of the linked list
+    public void removeFirst() {
+        if (this.isEmply()) {
+            return;
+        }
+    }
+
+    // TODO: remove last element of the linked list
+    public void removeLast() {
+        if (this.isEmply()) {
+            return;
+        }
+    }
+
+    // TODO: insert at given position
+    
+    
+    
     /** Search the Element using the Iterative Approach
      *
      * @param <T> : Represent any Object
