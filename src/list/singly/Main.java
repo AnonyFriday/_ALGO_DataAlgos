@@ -28,7 +28,8 @@ public class Main {
         list.traverse();
 
         // Searching value 
-        System.out.println("First position: " + list.searchIterativeApproach(20));
+//        System.out.println("First position: " + list.searchIterativeApproach(20));
+        System.out.println("First position: " + list.searchRecursiveApproach(20));
 
         // Clear the linked list
 //        list.clear();

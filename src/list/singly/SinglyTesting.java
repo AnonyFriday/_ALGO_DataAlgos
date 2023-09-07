@@ -113,7 +113,7 @@ public class SinglyTesting {
      *
      * @param <T> : Represent any Object
      * @param x : Represent the value or the Object (forcing to override the comparable function for the case of Object)
-     * @return the first position found in the linked list
+     * @return the first position found in the linked list（0 base position)
      */
     public <T> int searchIterativeApproach(T x) {
 
@@ -138,8 +138,38 @@ public class SinglyTesting {
         return pos;
     }
 
-    
-    
+    /** Search the Element using Recursive Approach
+     *
+     * <br>**Using Function Overloading to achieve the default function's parameters in Java**
+     *
+     * @param <T>: Represent any Object
+     * @param x: Represent the value or the Object (forcing to override the comparable function for the case of Object)
+     * @return the first position found in the linked list（0 base position)
+     */
+    public <T> int searchRecursiveApproach(T x) {
+        return searchRecursiveApproach(this.head, x);
+    }
+
+    private <T> int searchRecursiveApproach(Node node, T x) {
+        // Entry point to 
+        if (node == null) {
+            return -1;
+        }
+
+        if (node.getData().equals(x)) {
+            return 0;
+        }
+
+        int pos = searchRecursiveApproach(node.nextNode, x);
+
+        // Are not found
+        if (pos == -1) {
+            return -1;
+        } else {
+            return pos + 1;
+        }
+    }
+
     /**
      * Traverse the whole link list
      */
