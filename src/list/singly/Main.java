@@ -29,7 +29,7 @@ public class Main {
 
         // Searching value 
 //        System.out.println("First position: " + list.searchIterativeApproach(20));
-        System.out.println("First position: " + list.searchRecursiveApproach(20));
+        System.out.println("First position: " + list.searchRecursiveApproach(99));
 
         // Clear the linked list
 //        list.clear();

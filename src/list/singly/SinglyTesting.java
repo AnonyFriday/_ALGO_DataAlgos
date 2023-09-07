@@ -151,22 +151,24 @@ public class SinglyTesting {
     }
 
     private <T> int searchRecursiveApproach(Node node, T x) {
-        // Entry point to 
+        // Entry point to exit if reach the end of list
         if (node == null) {
             return -1;
         }
 
+        // Entry point to exit if the node has been found 
         if (node.getData().equals(x)) {
             return 0;
         }
 
+        // Recursive finding on position
         int pos = searchRecursiveApproach(node.nextNode, x);
 
         // Are not found
         if (pos == -1) {
-            return -1;
+            return -1; // If not found, return -1
         } else {
-            return pos + 1;
+            return pos + 1; // If found, increse the pos by one for each calling function
         }
     }
 
