@@ -60,6 +60,7 @@ public class SinglyTesting {
         head = node;
         tail = node;
         node.nextNode = null;
+        this.count++;
     }
 
     /**
@@ -79,8 +80,10 @@ public class SinglyTesting {
         } else {
             node.nextNode = this.head;
             this.head = node;
+
+            // Increment number of nodes by 1
+            this.count++;
         }
-        this.count++;
     }
 
     /**
@@ -103,10 +106,10 @@ public class SinglyTesting {
         } else {
             this.tail.nextNode = node;
             this.tail = node;
-        }
 
-        // Increment number of nodes by 1
-        this.count++;
+            // Increment number of nodes by 1
+            this.count++;
+        }
     }
 
     /**
@@ -119,6 +122,13 @@ public class SinglyTesting {
             return;
         }
 
+        // contains only 1 node
+        if (this.head.nextNode == null) {
+            this.head = null;
+            this.count--;
+            return;
+        }
+
         // Create a temp node poining to the next Node after Head Node
         Node temp = this.head.nextNode;
 
@@ -127,6 +137,7 @@ public class SinglyTesting {
 //        this.head = null;
         // Set the back the head node to the next node
         this.head = temp;
+        this.count--;
     }
 
     /** Remove last element of the linked list
@@ -141,6 +152,8 @@ public class SinglyTesting {
         // contains only 1 node
         if (this.head.nextNode == null) {
             this.head = null;
+            this.count--;
+            return;
         }
 
         // Iterating until reaching the next-to-tail node
@@ -151,14 +164,42 @@ public class SinglyTesting {
 
         this.tail = temp;
         this.tail.nextNode = null; // Setting null to deference the next node, release the last Object to GC
+        this.count--;
     }
 
-    // TODO: insert at given position
-    
-    
-    
-    
-    
+    /** Adding Node to the specific position
+     *
+     * @param node
+     * @param pos
+     */
+    public void add(Node node, int pos) {
+        // when no elements, adding to the list
+        if (this.isEmply()) {
+            this.addIfListEmpty(node);
+            return;
+        } else if (pos == 0) {
+            this.addFirst(node);
+            return;
+        } else if (pos == this.count - 1) {
+            this.addLast(node);
+            return;
+        } else if (pos >= this.count) {
+            return;
+        }
+
+        // seting the temp node before the target position
+        Node temp = this.head;
+        while (pos > 1) {
+            temp = temp.nextNode;
+            pos--;
+        }
+
+        // Switching a referecne of temp node and next node
+        node.nextNode = temp.nextNode;
+        temp.nextNode = node;
+        this.count++;
+    }
+
     /** Search the Element using the Iterative Approach
      *
      * @param <T> : Represent any Object
@@ -252,5 +293,13 @@ public class SinglyTesting {
      */
     public void clear() {
         head = tail = null;
+    }
+
+    /** Return the total nodes of the linked list
+     *
+     * @return
+     */
+    public int size() {
+        return this.count;
     }
 }
