@@ -109,21 +109,53 @@ public class SinglyTesting {
         this.count++;
     }
 
-    // TODO: remove first element of the linked list
+    /**
+     * Remove first element of the linked list
+     * <br>
+     * Create a temp node pointing to the next Node, while setting the current to null and setting back the head to temp afterward
+     */
     public void removeFirst() {
         if (this.isEmply()) {
             return;
         }
+
+        // Create a temp node poining to the next Node after Head Node
+        Node temp = this.head.nextNode;
+
+        // Set the current head node = null 
+        // In fact, if no pointer points to the Object, the Object will be terminated by the Garbage Collector
+//        this.head = null;
+        // Set the back the head node to the next node
+        this.head = temp;
     }
 
-    // TODO: remove last element of the linked list
+    /** Remove last element of the linked list
+     *
+     * Create a temp node pointing to the backward Node, while setting the current tail to null and setting it to temp afterward
+     * */
     public void removeLast() {
         if (this.isEmply()) {
             return;
         }
+
+        // contains only 1 node
+        if (this.head.nextNode == null) {
+            this.head = null;
+        }
+
+        // Iterating until reaching the next-to-tail node
+        Node temp = this.head;
+        while (temp.nextNode != this.tail) {
+            temp = temp.nextNode;
+        }
+
+        this.tail = temp;
+        this.tail.nextNode = null; // Setting null to deference the next node, release the last Object to GC
     }
 
     // TODO: insert at given position
+    
+    
     
     
     

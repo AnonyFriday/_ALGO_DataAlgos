@@ -24,12 +24,16 @@ public class Main {
         list.addLast(new Node(20));
         list.addLast(new Node(99));
 
-        // Testing Traverse
-        list.traverse();
-
         // Searching value 
 //        System.out.println("First position: " + list.searchIterativeApproach(20));
         System.out.println("First position: " + list.searchRecursiveApproach(99));
+
+        // Remove the first node
+        list.removeFirst();
+        list.removeLast();
+
+        // Testing Traverse
+        list.traverse();
 
         // Clear the linked list
 //        list.clear();
