@@ -9,7 +9,7 @@ package list.circular;
  * @author duyvu
  */
 public class Main {
-
+    
     public static void main(String[] args) {
         CircularTesting<String> list = new CircularTesting<>();
 
@@ -18,15 +18,18 @@ public class Main {
         list.addFirst("2");
         list.addFirst("3");
         list.addFirst("4");
-
+        list.addLast("100");
+        
         System.out.println("First: " + list.first());
         System.out.println("Last: " + list.last());
+//        list.removeFirst();
+        list.removeAtIndex(4);
         list.printList();
 
-        // Rotate the circular Linked List
-        list.rotate();
-        System.out.println("First: " + list.first());
-        System.out.println("Last: " + list.last());
-        list.printList();
+//        // Rotate the circular Linked List
+//        list.rotate();
+//        System.out.println("First: " + list.first());
+//        System.out.println("Last: " + list.last());
+//        list.printList();
     }
 }

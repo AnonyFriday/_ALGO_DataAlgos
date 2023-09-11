@@ -4,40 +4,41 @@
  */
 package list.singly;
 
+import list.singly.SinglyTesting;
+
 /**
  *
  * @author duyvu
  */
 public class Main {
-    
+
     public static void main(String[] args) {
 
-        // Initialize the Singly Linked List
-        SinglyTesting list = new SinglyTesting();
-        
-        list.addFirst(new Node(10));
-        list.addFirst(new Node(10));
-        list.addFirst(new Node(10));
-        list.addFirst(new Node(99));
-        list.addLast(new Node(20));
-        list.addLast(new Node(20));
-        list.addLast(new Node(20));
-        list.addLast(new Node(99));
-        list.add(new Node(9999), 0);
+	// Initialize the Singly Linked Lis
+	SinglyTesting list = new SinglyTesting();
 
-        // Searching value 
+	list.insertFirst(new Node(10));
+	list.insertFirst(new Node(10));
+	list.insertFirst(new Node(10));
+	list.insertFirst(new Node(99));
+	list.insertLast(new Node(20));
+	list.insertLast(new Node(20));
+	list.insertLast(new Node(20));
+	list.insertLast(new Node(99));
+	list.add(new Node(9999), 1);
+
+	// Searching value 
 //        System.out.println("First position: " + list.searchIterativeApproach(20));
-        System.out.println("First position: " + list.searchRecursiveApproach(99));
+	System.out.println("First position: " + list.searchRecursiveApproach(99));
 
 //        // Remove the first node
 //        list.removeFirst();
 //        list.removeLast();
+	// Testing Traverse
+	list.traverse();
+	System.err.println("Size: " + list.size());
 
-        // Testing Traverse
-        list.traverse();
-        System.err.println("Size: " + list.size());
-
-        // Clear the linked list
+	// Clear the linked list
 //        list.clear(); 
     }
 }

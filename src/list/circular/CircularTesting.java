@@ -106,11 +106,37 @@ public class CircularTesting<E> {
         if (size == 1) {        // Only 1 node in the list
             tail = null;
         } else {
-
             tail.setNextNode(temp.getNextNode());
-            size--;
         }
+        size--;
         return temp.getData();
+    }
+
+    public E removeAtIndex(int pos) {   // 1th is considered a baseindex
+        if (this.isEmpty() || pos > size || pos <= 0) {
+            return null;
+        }
+        if (pos == 1) {             // Remove the first if the pos = 0
+            return removeFirst();
+        } else {
+            Node<E> headNode = this.tail.getNextNode();
+            Node<E> nextHeadNode = headNode.getNextNode();
+
+            // Iterating untill the nextHeadNode is the target
+            for (int i = 0; i < pos - 2; i++) {
+                headNode = headNode.getNextNode();
+                nextHeadNode = headNode.getNextNode();
+            }
+
+            // Handle the case of deleting last node to assign tail to the new node
+            if (pos == size) {
+                this.tail = nextHeadNode.getNextNode();
+            }
+
+            // Linking the tail to the head node
+            headNode.setNextNode(nextHeadNode.getNextNode());
+            return headNode.getData();
+        }
     }
 
     // traverse

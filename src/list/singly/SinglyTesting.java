@@ -4,7 +4,8 @@
  */
 package list.singly;
 
-/** Create the Node for the List data structure
+/**
+ * Create the Node for the List data structure
  *
  * @author duyvu
  */
@@ -54,7 +55,7 @@ public class SinglyTesting {
      *
      * @param node
      */
-    private void addIfListEmpty(Node node) {
+    private void insertIfListEmpty(Node node) {
 
         // If node is the first element in the array
         head = node;
@@ -68,7 +69,7 @@ public class SinglyTesting {
      *
      * @param node
      */
-    public void addFirst(Node node) {
+    public void insertFirst(Node node) {
         // If the node is null
         if (node == null) {
             return;
@@ -76,7 +77,7 @@ public class SinglyTesting {
 
         // If the list is empty
         if (this.isEmply()) {
-            addIfListEmpty(node);
+            insertIfListEmpty(node);
         } else {
             node.nextNode = this.head;
             this.head = node;
@@ -89,20 +90,19 @@ public class SinglyTesting {
     /**
      * Add the Node the end of the list
      *
-     * The tail reference is pointing to the last object Node
-     * Set the nextNode of the last object Node to the newly added Node
-     * Set the tail reference pointing to the newly added Node
+     * The tail reference is pointing to the last object Node Set the nextNode of the last object Node to the newly
+     * added Node Set the tail reference pointing to the newly added Node
      *
      * @param node: newly created node
      */
-    public void addLast(Node node) {
+    public void insertLast(Node node) {
         if (node == null) {
             return;
         }
 
         // If the list is empty
         if (this.isEmply()) {
-            addIfListEmpty(node);
+            insertIfListEmpty(node);
         } else {
             this.tail.nextNode = node;
             this.tail = node;
@@ -115,7 +115,8 @@ public class SinglyTesting {
     /**
      * Remove first element of the linked list
      * <br>
-     * Create a temp node pointing to the next Node, while setting the current to null and setting back the head to temp afterward
+     * Create a temp node pointing to the next Node, while setting the current to null and setting back the head to temp
+     * afterward
      */
     public void removeFirst() {
         if (this.isEmply()) {
@@ -140,10 +141,13 @@ public class SinglyTesting {
         this.count--;
     }
 
-    /** Remove last element of the linked list
+    /**
+     * Remove last element of the linked list
      *
-     * Create a temp node pointing to the backward Node, while setting the current tail to null and setting it to temp afterward
-     * */
+     * Create a temp node pointing to the backward Node, while setting the current tail to null and setting it to temp
+     * afterward
+     *
+     */
     public void removeLast() {
         if (this.isEmply()) {
             return;
@@ -167,7 +171,34 @@ public class SinglyTesting {
         this.count--;
     }
 
-    /** Adding Node to the specific position
+    // TODO: remove the node at the given index 
+    public void removeAt(int pos) {
+
+        // Does not remove when the list is empty
+        if (this.isEmply()) {
+            return;
+        } else if (pos == 0) {
+            this.removeFirst();
+            return;
+        } else if (pos == this.count - 1) {
+            this.removeLast();
+            return;
+        }
+
+        // Track the node before the target node
+        Node temp = this.head;
+        Node tempAfter = temp.nextNode;
+        while (pos > 2) {
+            temp = temp.nextNode;
+            tempAfter = tempAfter.nextNode;
+            pos--;
+        }
+
+        temp.nextNode = tempAfter.nextNode;
+    }
+
+    /**
+     * Adding Node to the specific position
      *
      * @param node
      * @param pos
@@ -175,13 +206,13 @@ public class SinglyTesting {
     public void add(Node node, int pos) {
         // when no elements, adding to the list
         if (this.isEmply()) {
-            this.addIfListEmpty(node);
+            this.insertIfListEmpty(node);
             return;
         } else if (pos == 0) {
-            this.addFirst(node);
+            this.insertFirst(node);
             return;
         } else if (pos == this.count - 1) {
-            this.addLast(node);
+            this.insertLast(node);
             return;
         } else if (pos >= this.count) {
             return;
@@ -200,7 +231,8 @@ public class SinglyTesting {
         this.count++;
     }
 
-    /** Search the Element using the Iterative Approach
+    /**
+     * Search the Element using the Iterative Approach
      *
      * @param <T> : Represent any Object
      * @param x : Represent the value or the Object (forcing to override the comparable function for the case of Object)
@@ -229,7 +261,8 @@ public class SinglyTesting {
         return pos;
     }
 
-    /** Search the Element using Recursive Approach
+    /**
+     * Search the Element using Recursive Approach
      *
      * <br>**Using Function Overloading to achieve the default function's parameters in Java**
      *
@@ -295,7 +328,8 @@ public class SinglyTesting {
         head = tail = null;
     }
 
-    /** Return the total nodes of the linked list
+    /**
+     * Return the total nodes of the linked list
      *
      * @return
      */
