@@ -98,6 +98,7 @@ public class CircularTesting<E> {
         tail = tail.getNextNode();  // now new element becomes the tail                                      
     }
 
+    // remove methods group
     public E removeFirst() {    // remove and return the first element
         if (isEmpty()) {        // if the list is empty
             return null;

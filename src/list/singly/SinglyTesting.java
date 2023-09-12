@@ -9,23 +9,23 @@ package list.singly;
  *
  * @author duyvu
  */
-class Node<T> {
+class Node<E> {
 
-    private T data;
+    private E data;
     protected Node nextNode;
 
     // Parameterized Constructor
-    public Node(T data) {
+    public Node(E data) {
         this.data = data;
         nextNode = null;
     }
 
     // Getters & Setters
-    public T getData() {
+    public E getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(E data) {
         this.data = data;
     }
 }
@@ -35,7 +35,7 @@ class Node<T> {
  *
  * @author duyvu
  */
-public class SinglyTesting {
+public class SinglyTesting<E> {
 
     private Node head;
     private Node tail;
@@ -171,7 +171,6 @@ public class SinglyTesting {
         this.count--;
     }
 
-    // TODO: remove the node at the given index 
     public void removeAt(int pos) {
 
         // Does not remove when the list is empty
@@ -203,7 +202,8 @@ public class SinglyTesting {
      * @param node
      * @param pos
      */
-    public void add(Node node, int pos) {
+    public void add(Node node,
+                    int pos) {
         // when no elements, adding to the list
         if (this.isEmply()) {
             this.insertIfListEmpty(node);
@@ -234,11 +234,10 @@ public class SinglyTesting {
     /**
      * Search the Element using the Iterative Approach
      *
-     * @param <T> : Represent any Object
      * @param x : Represent the value or the Object (forcing to override the comparable function for the case of Object)
      * @return the first position found in the linked list（0 base position)
      */
-    public <T> int searchIterativeApproach(T x) {
+    public int searchIterativeApproach(E x) {
 
         // Predefine exceptions to ignore only 1 element and 0 element
         if (this.head == null) {
@@ -266,15 +265,15 @@ public class SinglyTesting {
      *
      * <br>**Using Function Overloading to achieve the default function's parameters in Java**
      *
-     * @param <T>: Represent any Object
      * @param x: Represent the value or the Object (forcing to override the comparable function for the case of Object)
      * @return the first position found in the linked list（0 base position)
      */
-    public <T> int searchRecursiveApproach(T x) {
+    public int searchRecursiveApproach(E x) {
         return searchRecursiveApproach(this.head, x);
     }
 
-    private <T> int searchRecursiveApproach(Node node, T x) {
+    private int searchRecursiveApproach(Node node,
+                                        E x) {
         // Entry point to exit if reach the end of list
         if (node == null) {
             return -1;
