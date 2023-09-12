@@ -13,7 +13,6 @@ import list.singly.SinglyTesting;
  */
 public class StackByLinkedList<E> implements StackADT<E> {
 
-    // Attributes
     private SinglyTesting<E> list;
 
     /**
