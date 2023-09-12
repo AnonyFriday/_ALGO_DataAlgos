@@ -13,6 +13,7 @@ import list.singly.SinglyTesting;
  */
 public class StackByLinkedList<E> implements StackADT<E> {
 
+    // Plot the SinglyLinkedList as the core of StackADT
     private SinglyTesting<E> list;
 
     /**
