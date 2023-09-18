@@ -16,6 +16,7 @@ public class StackByLinkedList<E> implements StackADT<E> {
     // Plot the SinglyLinkedList as the core of StackADT
     private SinglyTesting<E> list;
 
+    // TODO: Implements those definition for the method
     /**
      * Default Constructor <br>
      *
