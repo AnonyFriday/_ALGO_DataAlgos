@@ -13,9 +13,15 @@ import java.util.Arrays;
 public class StaticArrayLab<T> {
 
     // Initialize variables
-    private final T[] buffer;
-    private final int capacity;
-    public int length;
+    protected final T[] buffer;
+    protected int capacity;
+    protected int length;
+
+    private static final int DEFAULT_CAPACITY = 100000;
+
+    public StaticArrayLab() {
+	this(DEFAULT_CAPACITY, null);
+    }
 
     /**
      * Initialize the array through ellipsis operator
@@ -25,12 +31,19 @@ public class StaticArrayLab<T> {
      */
     @SafeVarargs
     public StaticArrayLab(int capacity, T... buffer) {
-	if (buffer.length < 0) {
-	    throw new IllegalArgumentException("Do no provide values for dummy argument.");
+	if (capacity <= 0) {
+	    this.buffer = (T[]) new Object[DEFAULT_CAPACITY];
+	    this.length = 0;
+	    this.capacity = DEFAULT_CAPACITY;
+	} else if (buffer.length == 0) {
+	    this.buffer = (T[]) new Object[capacity];
+	    this.length = 0;
+	    this.capacity = capacity;
+	} else {
+	    this.buffer = Arrays.copyOf(buffer, capacity);
+	    this.length = buffer.length;
+	    this.capacity = capacity;
 	}
-	this.buffer = Arrays.copyOf(buffer, capacity);
-	this.capacity = capacity;
-	this.length = buffer.length;
     }
 
     /**

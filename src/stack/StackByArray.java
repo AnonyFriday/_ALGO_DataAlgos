@@ -87,7 +87,8 @@ public class StackByArray<E> implements StackADT<E> {
 		    return false;
 		}
 
-		// Checking if the } in the closing matching with the { located in the buffer
+		// Checking if the } in the closing matching with the { located in the buffer 
+		// { at index 0 in opening == } at index 0 in closing
 		// If they are a pair {} or 1 == 1
 		if (closing.indexOf(c) != opening.indexOf(buffer.pop())) {
 		    // |.....{ | == -> 1 == 1
@@ -128,9 +129,8 @@ public class StackByArray<E> implements StackADT<E> {
      */
     @Override
     public void push(E e) {
-
 	// If the array is full, then we stop pushing new element
-	if (this.array.length == this.size()) {
+	if (this.top == (CAPACITY - 1)) {
 	    throw new IllegalStateException("Stack is full");
 	}
 
@@ -146,6 +146,7 @@ public class StackByArray<E> implements StackADT<E> {
     @Override
     public E pop() {
 
+	// If the stack is empty then no popping
 	if (this.isEmpty()) {
 	    return null;
 	}
@@ -162,6 +163,8 @@ public class StackByArray<E> implements StackADT<E> {
      */
     @Override
     public E peek() {
+
+	// If the stack is empty then no peeking
 	if (this.isEmpty()) {
 	    return null;
 	}
