@@ -14,13 +14,13 @@ public interface QueueADT<E> {
     public abstract void enqueue(E x);
 
     // Take the last elemet that comes last
-    public abstract void dequeue(E x);
+    public abstract void dequeue();
 
     // Get the first element without removing it
-    public abstract int getFront();
+    public abstract E getFront();
 
     // Get the last element without removing it
-    public abstract int getRear();
+    public abstract E getRear();
 
     // Check whether it's full or not
     public abstract boolean isFull();

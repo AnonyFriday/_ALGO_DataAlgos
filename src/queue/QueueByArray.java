@@ -8,6 +8,9 @@ import arrays.StaticArrayLab;
 import java.util.Arrays;
 
 /**
+ * Queue Implemented Using Normal Array
+ *
+ * <br>Inefficient due to the shifting forward after enqueue
  *
  * @author duyvu
  * @param <E>
@@ -37,7 +40,7 @@ public class QueueByArray<E> extends StaticArrayLab<E> implements QueueADT<E> {
     }
 
     @Override
-    public void dequeue(E x) {
+    public void dequeue() {
 	if (isEmpty()) {
 	    return;
 	}
@@ -48,20 +51,20 @@ public class QueueByArray<E> extends StaticArrayLab<E> implements QueueADT<E> {
     }
 
     @Override
-    public int getFront() {
+    public E getFront() {
 	if (isEmpty()) {
-	    return -1;
+	    return null;
 	} else {
-	    return 0;
+	    return this.buffer[head];
 	}
     }
 
     @Override
-    public int getRear() {
+    public E getRear() {
 	if (isEmpty()) {
-	    return -1;
+	    return null;
 	} else {
-	    return this.length - 1;
+	    return this.buffer[tail];
 	}
     }
 

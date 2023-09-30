@@ -133,4 +133,27 @@ public class StaticArrayLab<T> {
 	    System.out.print(el + " ");
 	}
     }
+
+    public static void main(String[] args) {
+	StaticArrayLab<Integer> array = new StaticArrayLab<>(20, 2, 3, 4, 5);
+
+	// Add the element to the array
+	array.add(10, 4);
+	array.add(10, 3);
+	array.add(10, array.length);
+	array.add(10, array.length);
+	array.add(10, array.length);
+	array.add(10, array.length);
+	array.add(10, 0);
+
+	array.show();
+
+//	 Remove the element from the array
+	array.removeAt(4);
+	array.show();
+
+	// Remove all occurence of 10 from the array
+	System.out.println("\nRemoved: " + array.removeOccurence(10));
+	array.show();
+    }
 }

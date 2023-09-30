@@ -2,19 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package recursion;
+package tree;
+
+import javax.swing.text.Position;
 
 /**
  *
  * @author duyvu
  */
-public class EnglishRulerTesting {
-    
-    public static void drawRuler(int nInches, int majorLength) {
-	
-    }
-    
-    public static void drawLine(int tickLength, int tickLabel) {
-	
-    }
+public interface TreeADT<E> extends Iterable<E> {
+
 }
