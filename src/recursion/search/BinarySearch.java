@@ -8,6 +8,9 @@ package recursion.search;
  * Binary Search tree using Recursive algorithm
  *
  * <br><br> Calculate the median mid = (low + high)/ 2
+ * <br><br> Calculate the binary search tree using recursion solution
+ *
+ *
  *
  * @author duyvu
  */
@@ -41,6 +44,6 @@ public class BinarySearch {
 
     public static void main(String[] args) {
 	int[] list = new int[]{1, 2, 5, 6, 8, 9, 10, 100, 101};
-	System.out.println(binarySerach(list, 100));
+	System.out.println(binarySerach(list, 102));
     }
 }
