@@ -28,13 +28,13 @@ public class Power {
 
     /**
      * If y is even x^(n/2) * x^(n/2) = x^n if y is odd
-     * 
+     *
      * If y is odd x^(n-1/2) * x^(n-1/2) * x = x^n
-     * 
+     *
      * if y == 0 then x = 1
      *
      *
-     * 
+     *
      * Big O (logn) single cutting the y in half at each activation record
      *
      *
@@ -59,9 +59,31 @@ public class Power {
 	return result;
     }
 
+    /**
+     * Same performance as the above solution but difference approach
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public static double powerDouble2(double x, int y) {
+	if (y == 0) {
+	    return 1;
+	}
+
+	// If y is even
+	if (y % 2 == 0) {
+	    return powerDouble2(x * x, y / 2);
+	} else {
+	    return x * powerDouble2(x * x, y / 2);
+	}
+
+    }
+
     public static void main(String[] args) {
-	System.out.println("Power: " + powerLinear(12.5, 1));
-	System.out.println("Power: " + powerDouble(12.5, 1));
+	System.out.println("Power: " + powerLinear(12.5, 4));
+	System.out.println("Power: " + powerDouble(12.5, 4));
+	System.out.println("Power: " + powerDouble2(12.5, 4));
 
     }
 }
