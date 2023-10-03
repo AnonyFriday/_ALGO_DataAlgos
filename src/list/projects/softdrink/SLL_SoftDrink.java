@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -156,6 +158,48 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
         } else {
             for (SLL_Node p = head; p != null; p = p.next) {
                 visit(p);
+            }
+        }
+    }
+
+    /**
+     * Traversing and printing all elements of a company
+     *
+     * @param company
+     */
+    public void printCompanyBased(String company) {
+        if (this.isEmpty()) {
+            System.out.println("EMPTY LIST.");
+        } else {
+            for (SLL_Node p = head; p != null; p = p.next) {
+                if (p.getData().getCompany().toLowerCase().equals(company.toLowerCase())) {
+                    visit(p);
+                }
+            }
+        }
+    }
+
+    // ====================================
+    // = Sort Methods
+    // ====================================
+    /**
+     * Sorting ascending with Price, then ascending with product line
+     */
+    public void ascSortPriceThenProductLine() {
+        if (this.isEmpty()) {
+            return;
+        }
+
+        // Temp data for swapping
+        SoftDrink data = null;
+
+        for (SLL_Node i = head; i != null; i = i.next) {
+            for (SLL_Node j = i.next; j != null; j = j.next) {
+                if (i.getData().compareTo(j.getData()) > 0) {
+                    data = i.getData();
+                    i.setData(j.getData());
+                    j.setData(data);
+                }
             }
         }
     }
@@ -322,8 +366,78 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
      * @param filename
      */
     @Override
-    public void writeObjectsToFile(String filename) {
+    public void writeObjectsToBinaryFile(String filename) {
+        if (this.isEmpty()) {
+            System.out.println("Empty List");
+        } else {
+            try {
+                File f = new File(filename);
+                if (f.exists()) {
+                    f.delete(); // delete old file
+                }
+                RandomAccessFile rf = new RandomAccessFile(f, "rw");
+                for (SLL_Node p = head; p != null; p = p.next) {
+                    visit_binF(rf, p);
+                }
+                rf.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
+    /**
+     * Printing element to a binary file
+     *
+     * @param f
+     * @param node
+     * @throws IOException
+     */
+    private void visit_binF(RandomAccessFile f,
+                            SLL_Node node) throws IOException {
+        f.writeBytes(node.getData().toString() + "\r\n");
+    }
+
+    /**
+     * Write object to text file (handling unicode file)
+     *
+     * @param filename
+     */
+    @Override
+    public void writeObjectsToTextFile(String filename) {
+        if (this.isEmpty()) {
+            System.out.println("Empty List");
+        } else {
+            try {
+                File f = new File(filename);
+                if (f.exists()) {
+                    f.delete(); // delete old file
+                }
+                PrintWriter prw = new PrintWriter(f);
+                for (SLL_Node p = head; p != null; p = p.next) {
+                    visit_textF(prw, p);
+                }
+                prw.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    /**
+     * Printing element to an opening text file
+     *
+     * @param f
+     * @param node
+     * @throws IOException
+     */
+    private void visit_textF(PrintWriter f,
+                             SLL_Node node) throws IOException {
+        f.println(node.getData().toString());
     }
 
     public static void main(String[] args) throws IOException {
@@ -333,7 +447,6 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
 
         // Test print a list
 //        list.printAll();
-
         // Test reverse
 //        list.reverse();
 //        list.printAll();
@@ -341,6 +454,18 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
         list.addFirst(new SoftDrink("Chim", "Chim", 10000, 1000));
         list.addLast(new SoftDrink("Chim", "Chim", 10000, 1000));
 
+        // Test remove first, last, by product line
+//        list.removeFirst();
+//        list.removeLast();
+//        list.remove("Miranda");
+//        list.removeFirst();
+//        list.printAll();
+//        list.printCompanyBased("coca");
+        list.ascSortPriceThenProductLine();
         list.printAll();
+
+        list.writeObjectsToBinaryFile(".\\src\\list\\projects\\softdrink\\data\\results_bin.dat");
+        list.writeObjectsToTextFile(".\\src\\list\\projects\\softdrink\\data\\results_text.dat");
     }
+
 }

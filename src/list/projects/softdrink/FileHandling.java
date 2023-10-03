@@ -14,5 +14,7 @@ public interface FileHandling<T> {
 
     public void readObjectsFromFile(String filename);
 
-    public void writeObjectsToFile(String filename);
+    public void writeObjectsToBinaryFile(String filename);
+
+    public void writeObjectsToTextFile(String filename);
 }

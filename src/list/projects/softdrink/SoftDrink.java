@@ -51,7 +51,7 @@ public class SoftDrink implements Comparable<SoftDrink> {
      */
     @Override
     public boolean equals(Object obj) {
-        return this.productLine.equals(((SoftDrink) obj).productLine);
+        return this.productLine.toLowerCase().equals(((SoftDrink) obj).productLine.toLowerCase());
     }
 
     /**

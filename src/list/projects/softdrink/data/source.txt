@@ -2,7 +2,7 @@ Natural orange2, Coca, 250, 9000
 Natural orange1, Coca, 250, 8700
 Red Apple, Chuong Duong, 180, 9000
 Miranda, Shirinda, 300, 7300
-Mango, Coca, 300, 7500
+Nước, Coca, 300, 7500
 
 
 Natural orange2, Coca, 250, 9000
