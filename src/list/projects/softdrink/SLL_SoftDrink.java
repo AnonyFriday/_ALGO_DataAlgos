@@ -4,61 +4,222 @@
  */
 package list.projects.softdrink;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author duyvu
  */
-public class SLL_SoftDrink implements Comparable<SLL_SoftDrink> {
+public class SLL_SoftDrink implements FileHandling<SoftDrink> {
 
     // ====================================
     // = Fields
     // ====================================
-    private String productLine;     // type of product
-    private String company = null;  // manufacturer
-    private int volume = 0;
-    private int price = 0;
+    private SLL_Node head, tail;
 
     // ====================================
     // = Constructor
     // ====================================
-    public SLL_SoftDrink(String productLine) {
-        this.productLine = productLine;
-    }
-
-    public SLL_SoftDrink(String productLine,
-                         String company,
-                         int volume,
-                         int price) {
-        this.productLine = productLine;
-        this.company = company;
-        this.volume = volume;
-        this.price = price;
+    public SLL_SoftDrink() {
+        head = tail = null;
     }
 
     // ====================================
-    // = Tools for Search Operations
+    // = Methods
     // ====================================
-    @Override
-    public boolean equals(Object obj) {
-        return this.productLine.equals(((SLL_SoftDrink) obj).productLine);
+    /**
+     * Check if the Linked List is null or not
+     *
+     * @return true or false if null
+     */
+    public boolean isEmpty() {
+        return head == null;
     }
 
     /**
-     * Sorting ascending by price then ascending by productLine
+     * Add first node to the singly linked list
      *
-     * @param o: object of SoftDrink class
-     * @return -1, 1, 0 depends on the comparison
+     * @param drink
+     */
+    public void addFirst(SoftDrink drink) {
+        SLL_Node node = new SLL_Node(drink);
+
+        // If empty then assign head and tail to node
+        if (isEmpty()) {
+            head = tail = node;
+        } else {
+            node.next = head;       // Link the new node to the head
+            head = node;            // now, the new node is the head
+        }
+    }
+
+    /**
+     * Add last node to the singly linked list
+     *
+     * @param drink
+     */
+    public void addLast(SoftDrink drink) {
+        SLL_Node node = new SLL_Node(drink);
+
+        // If empty then assign head and tail to node
+        if (isEmpty()) {
+            head = tail = node;
+        } else {
+            tail.next = node;       // link the new node to the tail
+            tail = node;            // now, the new node is the tail
+        }
+    }
+
+    /**
+     * Searching the SoftDrink using linear search O(n)
+     *
+     * @param productionLine
+     * @return a SoftDrink
+     */
+    public SoftDrink search(String productionLine) {
+
+        // If empty then return null
+        if (this.isEmpty()) {
+            return null;
+        }
+
+        SLL_Node p = head;
+
+        // O(n) in Time complexity
+        while (p != null) {
+            if (p.getData().getProductLine().equals(productionLine)) {
+                return p.getData();
+            }
+            // Keep increment untill getting the result
+            p = p.next;
+        }
+
+        // If not found then return null
+        return null;
+    }
+
+    // TODO: reverse function in error
+    public void reverse() {
+        if (this.isEmpty()) {
+            return;
+        }
+
+        // Create 3 pointers to handle before, after, current pointer
+        SLL_Node pAfter = null, pCurr = head, before = pCurr.next;
+        while (pCurr != null) {
+            pCurr.next = pAfter;
+
+            // shift before, current and after forward
+            pAfter = pCurr;
+            pCurr = before;
+            if (pCurr != null) {
+                before = before.next;
+            }
+        }
+
+        // Update head and tail
+        pCurr = head;
+        head = tail;
+        tail = pCurr;
+    }
+
+    // ====================================
+    // = Read Methods
+    // ====================================
+    private void visit(SLL_Node node) {
+        System.out.println(node.toString() + "\n");
+    }
+
+    /**
+     * Print all node within the list
+     */
+    public void printAll() {
+        if (this.isEmpty()) {
+            System.out.println("EMPTY LIST.");
+        } else {
+            for (SLL_Node p = head; p != null; p = p.next) {
+                visit(p);
+            }
+        }
+    }
+
+    // ====================================
+    // = Implemented from File Handling
+    // ====================================
+    /**
+     * Normalize the line of file to the SoftDrink object
+     *
+     * @param line: a line from a file
+     * @return a new Soft Drink object
      */
     @Override
-    public int compareTo(SLL_SoftDrink o) {
-        // Comparising price difference to sort price 
-        int priceDiff = this.price - o.price;
-        if (priceDiff > 0) {
-            return 1;
+    public SoftDrink createObjectFromLine(String line) {
+        StringTokenizer stk = new StringTokenizer(line, ",");
+
+        String productLine = stk.nextToken().trim();
+        String company = stk.nextToken().trim();
+        int volumne = Integer.parseInt(stk.nextToken().trim());
+        int price = Integer.parseInt(stk.nextToken().trim());
+        return new SoftDrink(productLine, company, volumne, price);
+    }
+
+    /**
+     * Reading a file containing SoftDrink to the list
+     *
+     * @param filename
+     */
+    @Override
+    public void readObjectsFromFile(String filename) {
+        FileReader fr = null;
+        BufferedReader bf = null;
+        try {
+            fr = new FileReader(filename);
+            bf = new BufferedReader(fr);
+
+            // Reading a line (no empty line) and add to the linked list
+            String line;
+            while ((line = bf.readLine()) != null && !line.isBlank()) {
+                this.addFirst(createObjectFromLine(line));
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            // Close the connection of FileReader and BufferedReader
+            try {
+                fr.close();
+                bf.close();
+            } catch (IOException ex) {
+                Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        if (priceDiff < 0) {
-            return -1;
-        }
-        return this.productLine.compareTo(productLine);
+    }
+
+    /**
+     *
+     * @param filename
+     */
+    @Override
+    public void writeObjectsToFile(String filename) {
+
+    }
+
+    public static void main(String[] args) throws IOException {
+        SLL_SoftDrink list = new SLL_SoftDrink();
+
+        list.readObjectsFromFile(".\\src\\list\\projects\\softdrink\\data\\source.txt");
+        list.printAll();
+        list.reverse();
+        list.printAll();
     }
 }
