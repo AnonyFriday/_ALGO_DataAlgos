@@ -43,6 +43,38 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
         return head == null;
     }
 
+    // TODO: reverse function in error
+    public void reverse() {
+        if (this.isEmpty()) {
+            return;
+        }
+
+        // Create 3 pointers to handle before, after, current pointer
+        SLL_Node pPrev = null, pCurr = head, pNext = pCurr.next;
+
+        // loop until the pCurr is null
+        while (pCurr != null) {
+            // Linking backward
+            pCurr.next = pPrev;
+
+            // Shifting previous and current after linking
+            pPrev = pCurr;
+            pCurr = pNext;
+
+            if (pCurr != null) {
+                pNext = pCurr.next;
+            }
+        }
+
+        // Update head and tail
+        pCurr = head;
+        head = tail;
+        tail = pCurr;
+    }
+
+    // ====================================
+    // = Create Methods
+    // ====================================
     /**
      * Add first node to the singly linked list
      *
@@ -77,6 +109,9 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
         }
     }
 
+    // ====================================
+    // = Search Methods
+    // ====================================
     /**
      * Searching the SoftDrink using linear search O(n)
      *
@@ -105,36 +140,11 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
         return null;
     }
 
-    // TODO: reverse function in error
-    public void reverse() {
-        if (this.isEmpty()) {
-            return;
-        }
-
-        // Create 3 pointers to handle before, after, current pointer
-        SLL_Node pAfter = null, pCurr = head, before = pCurr.next;
-        while (pCurr != null) {
-            pCurr.next = pAfter;
-
-            // shift before, current and after forward
-            pAfter = pCurr;
-            pCurr = before;
-            if (pCurr != null) {
-                before = before.next;
-            }
-        }
-
-        // Update head and tail
-        pCurr = head;
-        head = tail;
-        tail = pCurr;
-    }
-
     // ====================================
     // = Read Methods
     // ====================================
     private void visit(SLL_Node node) {
-        System.out.println(node.toString() + "\n");
+        System.out.println(node.getData().toString() + "\n");
     }
 
     /**
@@ -148,6 +158,108 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
                 visit(p);
             }
         }
+    }
+
+    // ====================================
+    // = Delete Methods
+    // ====================================
+    /**
+     * Remove based on given productLine
+     *
+     * @param productLine
+     * @return
+     */
+    public SoftDrink remove(String productLine) {
+
+        // If the list is empty then return null
+        if (isEmpty()) {
+            return null;
+        }
+
+        SoftDrink removeData = null;
+        SoftDrink cmpTarget = new SoftDrink(productLine);
+
+        // Initialize pointer to keeptrack
+        SLL_Node pPrev = null, pDel = head;
+
+        // Loop until found the node
+        while (pDel != null && !pDel.getData().equals(cmpTarget)) {
+            pPrev = pDel;
+            pDel = pDel.next;
+        }
+
+        // if element is in the list
+        if (pDel != null) {
+            removeData = pDel.getData();
+            if (pDel == head) {         // if at head
+                if (head == tail) {     // if only 1 element
+                    head = tail = null;
+                } else {
+                    head = head.next;
+                }
+            } else if (pDel == tail) { // if at tail
+                pPrev.next = null;
+                tail = pPrev;
+            } else {
+                pPrev.next = pDel.next;  // removing a middle node
+            }
+        }
+
+        // If not found then return null
+        return removeData;
+    }
+
+    /**
+     * Remove the last node of the linked list
+     *
+     * @return a removed object SoftDrink
+     */
+    public SoftDrink removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
+
+        SLL_Node pCurr = head;
+        SLL_Node pRemoved = tail;
+
+        // If only 1 element
+        if (head != null && head.next == null) {
+            head = tail = null;
+        } else {
+
+            // Loop until found the node before the tail
+            while (pCurr.next != tail) {
+                pCurr = pCurr.next;
+            }
+
+            // Set the tail to the previous node
+            pCurr.next = null;
+            tail = pCurr;
+        }
+
+        return pRemoved.getData();
+    }
+
+    /**
+     * Remove the first node of the linked list
+     *
+     * @return an object SoftDrink
+     */
+    public SoftDrink removeFirst() {
+        if (isEmpty()) {
+            return null;
+        }
+
+        SLL_Node pRemoved = head;
+
+        // If only 1 element
+        if (head != null && head.next == null) {
+            head = tail = null;
+        } else {
+            head = head.next;
+        }
+
+        return pRemoved.getData();
     }
 
     // ====================================
@@ -218,8 +330,17 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
         SLL_SoftDrink list = new SLL_SoftDrink();
 
         list.readObjectsFromFile(".\\src\\list\\projects\\softdrink\\data\\source.txt");
-        list.printAll();
-        list.reverse();
+
+        // Test print a list
+//        list.printAll();
+
+        // Test reverse
+//        list.reverse();
+//        list.printAll();
+        // Test add first, add last
+        list.addFirst(new SoftDrink("Chim", "Chim", 10000, 1000));
+        list.addLast(new SoftDrink("Chim", "Chim", 10000, 1000));
+
         list.printAll();
     }
 }

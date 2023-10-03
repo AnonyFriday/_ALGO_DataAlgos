@@ -9,5 +9,5 @@ package list.projects.softdrink;
  * @author duyvu
  */
 public class SLL_SoftDrink_Tester {
-    
+
 }

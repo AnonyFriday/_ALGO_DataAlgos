@@ -21,6 +21,11 @@ public class SoftDrink implements Comparable<SoftDrink> {
     // ====================================
     // = Constructor
     // ====================================
+    /**
+     * Constructor used for comparing 2 objects
+     *
+     * @param productLine
+     */
     public SoftDrink(String productLine) {
         this.productLine = productLine;
     }
@@ -59,12 +64,6 @@ public class SoftDrink implements Comparable<SoftDrink> {
         return String.format("%s,%s,%d,%d", productLine, company, volume, price);
     }
 
-    /**
-     * Sorting ascending by price then ascending by productLine
-     *
-     * @param o: object of SoftDrink class
-     * @return -1, 1, 0 depends on the comparison
-     */
     @Override
     public int compareTo(SoftDrink o) {
         // Comparising price difference to sort price 
