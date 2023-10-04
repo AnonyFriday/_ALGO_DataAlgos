@@ -120,7 +120,7 @@ public class DLL_FlowerList {
      * @return true if adding successfully
      */
     public boolean addAfterNode(DLL_Node p,
-                            Flower f) {
+                                Flower f) {
         if (this.isEmpty() || p == tail) {
             return addLast(f);
         } else {
@@ -134,5 +134,93 @@ public class DLL_FlowerList {
             newNode.next = after;
         }
         return true;
+    }
+
+    // ====================================
+    // = Search Methods
+    // ====================================
+    /**
+     * Searching the Node using flower name
+     *
+     * @param flowerName
+     * @return
+     */
+    public DLL_Node search(String flowerName) {
+        if (this.isEmpty()) {
+            return null;
+        }
+
+        Flower targetFlower = new Flower(flowerName);
+        DLL_Node targetNode = null;
+
+        // Loop until the targetNode has been founded
+        while (targetNode != null) {
+
+            // If found succesfull, then return the element immediately
+            if (targetNode.getFlower().equals(targetFlower)) {
+                return targetNode;
+            } else {
+                targetNode = targetNode.next;
+            }
+        }
+
+        return targetNode;
+    }
+
+    // ====================================
+    // = Remove Methods
+    // ====================================
+    /**
+     * Remove the first Node
+     *
+     * @return a removed node
+     */
+    public DLL_Node removeFirst() {
+        if (isEmpty()) {
+            return null;
+        }
+
+        DLL_Node removedNode = head;
+
+        if (head == tail) {
+            // List only has 1 item
+            head = tail = null;
+        } else {
+            // NULL <-- removed <--> next
+
+            // Cutoff the link betweeen removed and next node
+            DLL_Node nextNode = head.next;
+            removedNode.next = null;
+            nextNode.prev = null;
+            head = nextNode;
+        }
+
+        return removedNode;
+    }
+
+    /**
+     * Remove the last Node
+     *
+     * @return a removed node
+     */
+    public DLL_Node removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
+
+        DLL_Node removedNode = tail;
+
+        if (head == tail) {
+            head = tail = null;
+        } else {
+            // prev <--> removed --> null
+            DLL_Node prevNode = tail.prev;
+
+            // Cutoff the link between removed and prev node
+            prevNode.next = null;
+            removedNode.prev = null;
+            tail = prevNode;
+        }
+        return removedNode;
     }
 }
