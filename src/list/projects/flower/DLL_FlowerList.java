@@ -223,4 +223,59 @@ public class DLL_FlowerList {
         }
         return removedNode;
     }
+
+    /**
+     * Remove the given node from the list
+     *
+     * @param node: given node
+     * @return a removed node
+     */
+    public DLL_Node remove(DLL_Node node) {
+        if (isEmpty()) {
+            return null;
+        }
+        if (node == head) {
+            return removeFirst();
+        }
+        if (node == tail) {
+            return removeLast();
+        }
+
+        // prev <--> node <--> next
+        DLL_Node prevNode = node.prev;
+        DLL_Node nextNode = node.next;
+
+        // Set the link between prev and next, cutoff the link from node to both sides
+        prevNode.next = nextNode;
+        nextNode.prev = prevNode;
+        node.next = null;
+        node.prev = null;
+
+        return node;
+    }
+
+    /**
+     * Remove the flower name
+     *
+     * @param flowerName
+     * @return a removed node containing a flower name
+     */
+    public DLL_Node remove(String flowerName) {
+        // If empty then return nothing
+        if (isEmpty()) {
+            return null;
+        }
+
+        // Search the node having the flower name first 
+        DLL_Node removedNode = this.search(flowerName);
+        if (removedNode == head) {
+            return removeFirst();
+        }
+        if (removedNode == tail) {
+            return removeLast();
+        }
+
+        // If removedNode is null than return null, else return the removed node
+        return removedNode != null ? remove(removedNode) : null;
+    }
 }
