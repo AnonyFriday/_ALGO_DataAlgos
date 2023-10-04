@@ -6,11 +6,18 @@ package list.projects.softdrink;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -326,35 +333,29 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
         return new SoftDrink(productLine, company, volumne, price);
     }
 
-    /**
-     * Reading a file containing SoftDrink to the list
-     *
-     * @param filename
-     */
-    @Override
-    public void readObjectsFromFile(String filename) {
-        FileReader fr = null;
-        BufferedReader bf = null;
+    public void writeObjectsToBinaryFile2(String filename) {
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
         try {
-            fr = new FileReader(filename);
-            bf = new BufferedReader(fr);
+            File file = new File(filename);
+            fos = new FileOutputStream(file);
+            oos = new ObjectOutputStream(fos);
 
-            // Reading a line (no empty line) and add to the linked list
-            String line;
-            while ((line = bf.readLine()) != null && !line.isBlank()) {
-                this.addFirst(createObjectFromLine(line));
+            if (file.exists()) {
+                file.delete();
             }
 
+            for (SLL_Node p = head; p != null; p = p.next) {
+                oos.writeObject(p.getData());
+            }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-
-            // Close the connection of FileReader and BufferedReader
             try {
-                fr.close();
-                bf.close();
+                fos.close();
+                oos.close();
             } catch (IOException ex) {
                 Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -362,6 +363,7 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
     }
 
     /**
+     * Write an object as a byte array to file
      *
      * @param filename
      */
@@ -386,18 +388,6 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
                 Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-
-    /**
-     * Printing element to a binary file
-     *
-     * @param f
-     * @param node
-     * @throws IOException
-     */
-    private void visit_binF(RandomAccessFile f,
-                            SLL_Node node) throws IOException {
-        f.writeBytes(node.getData().toString() + "\r\n");
     }
 
     /**
@@ -429,6 +419,53 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
     }
 
     /**
+     * Reading a file containing SoftDrink to the list
+     *
+     * @param filename
+     */
+    @Override
+    public void readObjectsFromFile(String filename) {
+        FileReader fr = null;
+        BufferedReader bf = null;
+        try {
+            fr = new FileReader(filename, Charset.defaultCharset());
+            bf = new BufferedReader(fr);
+
+            // Reading a line (no empty line) and add to the linked list
+            String line;
+            while ((line = bf.readLine()) != null && !line.isBlank()) {
+                this.addFirst(createObjectFromLine(line));
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            // Close the connection of FileReader and BufferedReader
+            try {
+                fr.close();
+                bf.close();
+            } catch (IOException ex) {
+                Logger.getLogger(SLL_SoftDrink.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    /**
+     * Printing element to a binary file
+     *
+     * @param f
+     * @param node
+     * @throws IOException
+     */
+    private void visit_binF(RandomAccessFile f,
+                            SLL_Node node) throws IOException {
+        f.writeBytes(node.getData().toString() + "\r\n");
+    }
+
+    /**
      * Printing element to an opening text file
      *
      * @param f
@@ -438,6 +475,7 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
     private void visit_textF(PrintWriter f,
                              SLL_Node node) throws IOException {
         f.println(node.getData().toString());
+//        f.println("私は");
     }
 
     public static void main(String[] args) throws IOException {
@@ -466,6 +504,6 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
 
         list.writeObjectsToBinaryFile(".\\src\\list\\projects\\softdrink\\data\\results_bin.dat");
         list.writeObjectsToTextFile(".\\src\\list\\projects\\softdrink\\data\\results_text.dat");
+        list.writeObjectsToBinaryFile2(".\\src\\list\\projects\\softdrink\\data\\results_bin2.dat");
     }
-
 }

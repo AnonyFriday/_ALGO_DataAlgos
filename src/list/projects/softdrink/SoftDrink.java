@@ -4,11 +4,13 @@
  */
 package list.projects.softdrink;
 
+import java.io.Serializable;
+
 /**
  *
  * @author duyvu
  */
-public class SoftDrink implements Comparable<SoftDrink> {
+public class SoftDrink implements Comparable<SoftDrink>, Serializable {
 
     // ====================================
     // = Fields
