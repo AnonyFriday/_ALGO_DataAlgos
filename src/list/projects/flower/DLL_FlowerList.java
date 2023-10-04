@@ -146,12 +146,13 @@ public class DLL_FlowerList {
      * @return
      */
     public DLL_Node search(String flowerName) {
+        // If empty then return nothing
         if (this.isEmpty()) {
             return null;
         }
 
         Flower targetFlower = new Flower(flowerName);
-        DLL_Node targetNode = null;
+        DLL_Node targetNode = head;
 
         // Loop until the targetNode has been founded
         while (targetNode != null) {
@@ -159,9 +160,8 @@ public class DLL_FlowerList {
             // If found succesfull, then return the element immediately
             if (targetNode.getFlower().equals(targetFlower)) {
                 return targetNode;
-            } else {
-                targetNode = targetNode.next;
             }
+            targetNode = targetNode.next;
         }
 
         return targetNode;
@@ -277,5 +277,69 @@ public class DLL_FlowerList {
 
         // If removedNode is null than return null, else return the removed node
         return removedNode != null ? remove(removedNode) : null;
+    }
+
+    // ====================================
+    // = Read Methods
+    // ====================================
+    /**
+     * Print all flowers from left to right
+     */
+    public void printAll() {
+        for (DLL_Node curr = head; curr != null; curr = curr.next) {
+            System.out.println(curr.getFlower().toString());
+        }
+    }
+
+    /**
+     * Print all flowers from right to left
+     */
+    public void printAllReverse() {
+        if (isEmpty()) {
+            System.out.println("Empty List");
+        } else {
+            for (DLL_Node curr = tail; curr != null; curr = curr.prev) {
+                System.out.println(curr.getFlower().toString());
+            }
+        }
+    }
+
+    /**
+     * Print all flowers based on original
+     *
+     * @param original
+     */
+    public void printAllOriginal(String original) {
+        if (isEmpty()) {
+            System.out.println("Empty List");
+        } else {
+            for (DLL_Node curr = head; curr != null; curr = curr.next) {
+                if (curr.getFlower().getOriginal().equalsIgnoreCase(original)) {
+                    System.out.println(curr.getFlower().toString());
+                }
+            }
+        }
+    }
+
+    // For testing
+    public static void main(String[] args) {
+        DLL_FlowerList list = new DLL_FlowerList();
+
+        // Testing add
+        list.addLast(new Flower("00 VU KIM ", "Ha Lan", 34));
+        list.addFirst(new Flower("1VU KIM ", "Ha Lan", 90));
+        list.addFirst(new Flower("2 VU KIM ", "Vung Tau", 22));
+        list.addFirst(new Flower("3VU KIM ", "Ha Lan", 34));
+        list.addLast(new Flower("09 VU KIM ", "Ho Chi Minh", 34));
+
+        // Searching
+//        System.out.println(list.search("09 VU KIM "));
+        // Remove
+//        list.remove("00 VU KIM ");
+//        list.remove("3VU KIM ");
+        // Reading
+//        list.printAll();
+//        list.printAllReverse();
+        list.printAllOriginal("Ha Lan");
     }
 }
