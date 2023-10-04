@@ -13,21 +13,26 @@ package stack.theories;
  */
 public class StackByArray<E> implements StackADT<E> {
 
-    // Attributes
+    // ====================================
+    // = Fields
+    // ====================================
     public static final int CAPACITY;
     private E[] array;
     private int top;
 
+    // ====================================
+    // = Constructors
+    // ====================================
     /**
      * Setting up the static block (static initializer) running at runtime
      */
     static {
-	CAPACITY = 100;
+        CAPACITY = 100;
     }
 
     // Default Constructor
     public StackByArray() {
-	this(CAPACITY);
+        this(CAPACITY);
     }
 
     /**
@@ -36,10 +41,13 @@ public class StackByArray<E> implements StackADT<E> {
      * @param capacity
      */
     public StackByArray(int capacity) {
-	this.array = (E[]) new Object[capacity];
-	this.top = -1;
+        this.array = (E[]) new Object[capacity];
+        this.top = -1;
     }
 
+    // ====================================
+    // = Methods
+    // ====================================
     /**
      * Reverse an array passed to this stack
      *
@@ -47,22 +55,20 @@ public class StackByArray<E> implements StackADT<E> {
      * @param a: a passed array to this function
      */
     public static <E> void reverse(E[] a) {
-	StackADT<E> buffer = new StackByArray<>(a.length);
-	for (int i = 0; i < a.length; i++) {
-	    buffer.push(a[i]);
-	}
-	for (int i = 0; i < a.length; i++) {
-	    a[i] = buffer.pop();
-	}
+        StackADT<E> buffer = new StackByArray<>(a.length);
+        for (int i = 0; i < a.length; i++) {
+            buffer.push(a[i]);
+        }
+        for (int i = 0; i < a.length; i++) {
+            a[i] = buffer.pop();
+        }
     }
 
     /**
-     *
+     * Matching Parentheses in a string
      * e.g."[vu kim duy]"
      *
      * | [( | and ) -> if 1 pair is matched, then take out the ( at the stack
-     *
-     *
      *
      * @param <E>
      * @param expression
@@ -70,38 +76,62 @@ public class StackByArray<E> implements StackADT<E> {
      */
     public static <E> boolean matchingParenthese(String expression) {
 
-	// Initialize the variables 
-	final String opening = "{[(";
-	final String closing = "}])";
+        // Initialize the variables 
+        final String opening = "{[(";
+        final String closing = "}])";
 
-	// Initialize the buffer for storing opening parathenese
-	StackByArray<Character> buffer = new StackByArray<>();
-	for (char c : expression.toCharArray()) {
-	    if (opening.indexOf(c) != -1) {
-		buffer.push(c);
-	    } // Extracting the character from the string and comparing if matching is found 
-	    else if (closing.indexOf(c) != -1) {
+        // Initialize the buffer for storing opening parathenese
+        StackByArray<Character> buffer = new StackByArray<>();
+        for (char c : expression.toCharArray()) {
 
-		// Assume that if the current buffer is null then we turn false since there is nothing for comparision
-		if (buffer.isEmpty()) { // In case there is no opening parenthesis due to the missing the left one then return false
-		    return false;
-		}
+            // bottom [......
+            // bottom ....... -> pop [ and compare ] in closing
+            if (opening.indexOf(c) != -1) {
+                buffer.push(c);
+            } // Extracting the character from the string and comparing if matching is found 
+            else if (closing.indexOf(c) != -1) {
 
-		// Checking if the } in the closing matching with the { located in the buffer 
-		// { at index 0 in opening == } at index 0 in closing
-		// If they are a pair {} or 1 == 1
-		if (closing.indexOf(c) != opening.indexOf(buffer.pop())) {
-		    // |.....{ | == -> 1 == 1
-		    // |.....}|
-		    return false;
-		}
-	    }
-	}
+                // Assume that if the current buffer is null then we turn false since there is nothing for comparision
+                if (buffer.isEmpty()) { // In case there is no opening parenthesis due to the missing the left one then return false
+                    return false;
+                }
 
-	// If the whole process resolves in the empty Stack, which means the expression is true
-	return buffer.isEmpty();
+                // Checking if the } in the closing matching with the { located in the buffer 
+                // { at index 0 in opening == } at index 0 in closing
+                // If they are a pair {} or 1 == 1
+                if (closing.indexOf(c) != opening.indexOf(buffer.pop())) {
+                    // |.....{ | == -> 1 == 1
+                    // |.....}|
+                    return false;
+                }
+            }
+        }
+
+        // If the whole process resolves in the empty Stack, which means the expression is true
+        return buffer.isEmpty();
     }
 
+    /**
+     * Checking if the array is full or not
+     *
+     * @return true if the array is full, otherwise return false
+     */
+    public boolean isFull() {
+        return top == (CAPACITY - 1);
+    }
+
+    /**
+     * Display all element within the stack
+     */
+    public void displayAll() {
+        for (int i = 0; i < size(); i++) {
+            System.out.println(array[i]);
+        }
+    }
+
+    // ====================================
+    // = Methods implemented from Interface
+    // ====================================
     /**
      * Check the stack size
      *
@@ -109,7 +139,7 @@ public class StackByArray<E> implements StackADT<E> {
      */
     @Override
     public int size() {
-	return this.top + 1;
+        return this.top + 1;
     }
 
     /**
@@ -119,23 +149,25 @@ public class StackByArray<E> implements StackADT<E> {
      */
     @Override
     public boolean isEmpty() {
-	return this.top == -1;
+        return this.top == -1;
     }
 
     /**
      * Pushing new element to the stack
      *
      * @param e: a new element being pushed to the top of the stack
+     * @return a newly pushed element
      */
     @Override
-    public void push(E e) {
-	// If the array is full, then we stop pushing new element
-	if (this.top == (CAPACITY - 1)) {
-	    throw new IllegalStateException("Stack is full");
-	}
+    public E push(E e) {
+        // If the array is full, then we stop pushing new element
+        if (isFull()) {
+            return null;
+        }
 
-	// Increment the pointer top by 1 and add element to the ith index
-	this.array[++this.top] = e;
+        // Increment the pointer top by 1 and add element to the ith index
+        this.array[++this.top] = e;
+        return e;
     }
 
     /**
@@ -145,15 +177,15 @@ public class StackByArray<E> implements StackADT<E> {
      */
     @Override
     public E pop() {
+        // If the stack is empty then no popping
+        if (this.isEmpty()) {
+            return null;
+        }
 
-	// If the stack is empty then no popping
-	if (this.isEmpty()) {
-	    return null;
-	}
-
-	E removedElement = this.array[top];
-	this.array[top--] = null;
-	return removedElement;
+        // Remove the top of the stack
+        E removedElement = this.array[top];
+        this.array[top--] = null;
+        return removedElement;
     }
 
     /**
@@ -164,10 +196,48 @@ public class StackByArray<E> implements StackADT<E> {
     @Override
     public E peek() {
 
-	// If the stack is empty then no peeking
-	if (this.isEmpty()) {
-	    return null;
-	}
-	return this.array[top];
+        // If the stack is empty then no peeking
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.array[top];
+    }
+
+    /**
+     * Clear the stack immediately
+     */
+    @Override
+    public void clear() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+
+    // Testing
+    public static void main(String[] args) {
+        StackByArray<Integer> stackArray = new StackByArray<Integer>();
+
+        // Testing push()
+        stackArray.push(1);
+        stackArray.push(2);
+        stackArray.push(3);
+        stackArray.displayAll();
+
+        Integer[] arr = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+        // Testing reverisng the array using Array-based Stack
+        StackByArray.reverse(arr);
+
+        // Testing matchingParenthese function
+        System.out.println("Matching Parentheses: " + StackByArray.matchingParenthese("{[[{}]]}8988"));
+
+        // Testing pop()
+        stackArray.pop();
+        stackArray.pop();
+//        stackArray.pop();
+//        stackArray.pop();
+
+        System.out.println("Top Element: " + stackArray.peek());
+
     }
 }

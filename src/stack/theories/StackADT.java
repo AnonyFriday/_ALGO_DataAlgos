@@ -34,7 +34,7 @@ public interface StackADT<E> {
      *
      * @param e the element to be inserted
      */
-    public void push(E e);
+    public E push(E e);
 
     /**
      * Remove and returns the top element from the stack
@@ -49,4 +49,9 @@ public interface StackADT<E> {
      * @return element from the top of the stack
      */
     public E peek();
+
+    /**
+     * Clear the stack
+     */
+    public void clear();
 }
