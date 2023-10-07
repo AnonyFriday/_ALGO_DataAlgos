@@ -4,6 +4,7 @@
  */
 package stack.projects.numberstradding;
 
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 import stack.theories.StackByLinkedList;
 
@@ -30,6 +31,11 @@ public class NumberBaseAdding {
 	StackByLinkedList<Character> sOperand_1 = new StackByLinkedList<>();
 	StackByLinkedList<Character> sOperand_2 = new StackByLinkedList<>();
 	StackByLinkedList<Character> result = new StackByLinkedList<>();
+
+	// For leading and trailing purpose 
+	// 00 -> 0
+	num1 = trimZeros(num1);
+	num2 = trimZeros(num2);
 
 	for (int i = 0; i < num1.length(); i++) {
 	    sOperand_1.push(num1.charAt(i));
@@ -59,17 +65,25 @@ public class NumberBaseAdding {
 	// 9 + 1 = '0', carry 1 => 10
 	// 127 + 123 = '3'50 carry 0 => 350
 	// 999 + 999 = '0'998 carry 1 => 10998
-	// If the last result start with 0, and also carry =1, then add 1 to the result string
-	if (resultStr.startsWith("0") && carry.get() == 1) {
+	// 57 + 74  = '3'1 carry 1 => 131
+	// If the last result still have carry then add 1 to the result string
+	if (carry.get() == 1) {
 	    resultStr = "1" + resultStr;
 	}
 
 	return resultStr;
     }
 
-    public static void add(AtomicInteger carry, char d1, char d2, StackByLinkedList<Character> result) {
+    /**
+     * Adding 2 character typed digit of the number
+     *
+     * @param carry: the current carry using atomic integer
+     * @param d1: first digit
+     * @param d2: second digit
+     * @param result: pushing the new digit to the result stack
+     */
+    private static void add(AtomicInteger carry, char d1, char d2, StackByLinkedList<Character> result) {
 
-	// By default, carry is 0
 	int num1 = Character.digit(d1, 10);
 	int num2 = Character.digit(d2, 10);
 
@@ -78,12 +92,34 @@ public class NumberBaseAdding {
 	int sum = num1 + num2 + carry.get();
 	if (sum >= 10) {
 
-	    // reset carry back to the 1
-	    carry.set(sum / 10);
+	    // set carry = 1 if sum >= 10, and reduce sum from 10s to 1s
+	    carry.set(1);
 	    sum %= 10;
+	} else {
+
+	    // set carry = 0 if sum < 10
+	    carry.set(0);
 	}
 
 	result.push(Character.forDigit(sum, 10));
+    }
+
+    /**
+     * Trimming zeros and space before executing the addition
+     *
+     * @param number: pre-formatted number
+     * @return post formatted number
+     */
+    public static String trimZeros(String number) {
+	final String fullZeros = "^[0]+$";
+	final String leadingZeros = "^[0]+";
+
+	// 000000 -> 
+	if (number.matches(fullZeros)) {
+	    return number.trim().replaceAll(fullZeros, "0");
+	} else {
+	    return number.trim().replaceAll(leadingZeros, "");
+	}
     }
 
     public static void main(String[] args) {
@@ -91,13 +127,16 @@ public class NumberBaseAdding {
 	System.out.println("Result: " + add("123", "123"));
 	System.out.println("Result: " + add("000", "123"));
 	System.out.println("Result: " + add("0", "123"));
-	System.out.println("Result: " + add("0", "0"));
+	System.out.println("Result: " + add("01", "03"));
+	System.out.println("Result: " + add("09", "0000000999"));
+	System.out.println("Result: " + add("0000", "000000000"));
 
 	// Testing with carry
-	System.out.println("Result: " + add("1", "9"));
+	System.out.println("Result: " + add("1", "00000009"));
 	System.out.println("Result: " + add("123", "127"));
-	System.out.println("Result: " + add("3", "127"));
+	System.out.println("Result: " + add("57", "74"));
 	System.out.println("Result: " + add("999", "9999"));
 	System.out.println("Result: " + add("999", "1000"));
+	System.out.println("Result: " + add("7", "4078"));
     }
 }
