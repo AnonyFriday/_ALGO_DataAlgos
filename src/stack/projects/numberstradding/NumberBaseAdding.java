@@ -4,6 +4,7 @@
  */
 package stack.projects.numberstradding;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import stack.theories.StackByLinkedList;
 
 /**
@@ -43,11 +44,10 @@ public class NumberBaseAdding {
 	// case 2: if length are equal, converting to digit and adding together
 	// => while exxecute when at least 1 stack still have element
 	char d1, d2;
-	Integer carry = 0;
+	AtomicInteger carry = new AtomicInteger(0);
 	while (!sOperand_1.isEmpty() || !sOperand_2.isEmpty()) {
 	    d1 = sOperand_1.isEmpty() ? '0' : sOperand_1.pop();
 	    d2 = sOperand_2.isEmpty() ? '0' : sOperand_2.pop();
-
 	    add(carry, d1, d2, result);
 	}
 
@@ -55,12 +55,19 @@ public class NumberBaseAdding {
 	while (!result.isEmpty()) {
 	    resultStr += result.pop();
 	}
-//	result.displayyAll();
+
+	// 9 + 1 = '0', carry 1 => 10
+	// 127 + 123 = '3'50 carry 0 => 350
+	// 999 + 999 = '0'998 carry 1 => 10998
+	// If the last result start with 0, and also carry =1, then add 1 to the result string
+	if (resultStr.startsWith("0") && carry.get() == 1) {
+	    resultStr = "1" + resultStr;
+	}
 
 	return resultStr;
     }
 
-    public static void add(Integer carry, char d1, char d2, StackByLinkedList<Character> result) {
+    public static void add(AtomicInteger carry, char d1, char d2, StackByLinkedList<Character> result) {
 
 	// By default, carry is 0
 	int num1 = Character.digit(d1, 10);
@@ -68,9 +75,11 @@ public class NumberBaseAdding {
 
 	// incase of 4 => just return '4', carry = 0
 	// incase of 14 => just return '4', carry = 1
-	int sum = num1 + num2 + carry;
+	int sum = num1 + num2 + carry.get();
 	if (sum >= 10) {
-	    carry = sum / 10;
+
+	    // reset carry back to the 1
+	    carry.set(sum / 10);
 	    sum %= 10;
 	}
 
@@ -79,12 +88,16 @@ public class NumberBaseAdding {
 
     public static void main(String[] args) {
 	// Testing without carry
-//	System.out.println("Result: " + add("123", "123"));
+	System.out.println("Result: " + add("123", "123"));
+	System.out.println("Result: " + add("000", "123"));
+	System.out.println("Result: " + add("0", "123"));
+	System.out.println("Result: " + add("0", "0"));
 
 	// Testing with carry
+	System.out.println("Result: " + add("1", "9"));
 	System.out.println("Result: " + add("123", "127"));
-//	System.out.println("Result: " + add("000", "127"));
-//	System.out.println("Result: " + add("993", "127"));
-//	System.out.println("Result: " + add("999", "1000"));
+	System.out.println("Result: " + add("3", "127"));
+	System.out.println("Result: " + add("999", "9999"));
+	System.out.println("Result: " + add("999", "1000"));
     }
 }
