@@ -22,7 +22,7 @@ public class QueueByCircularArray<E> implements QueueADT<E> {
     private int size;	// current number of elements
 
     // Create the class variables
-    private int DEFAULT_CAPACITY;
+    private final int DEFAULT_CAPACITY;
 
     // Default Constructor
     public QueueByCircularArray() { // constructs queue with default capacity
@@ -109,7 +109,6 @@ public class QueueByCircularArray<E> implements QueueADT<E> {
         }
     }
 
-    @Override
     public boolean isFull() {
         // first | | | | | last   
         // | | | | | first | last | | 

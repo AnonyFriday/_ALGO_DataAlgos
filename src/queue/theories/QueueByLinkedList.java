@@ -4,33 +4,8 @@
  */
 package queue.theories;
 
-class Node<E> {
-
-    private E data;
-    private Node next;
-
-    public Node(E data, Node next) {
-	this.data = data;
-	this.next = next;
-    }
-
-    public E getData() {
-	return data;
-    }
-
-    public void setData(E data) {
-	this.data = data;
-    }
-
-    public Node getNext() {
-	return next;
-    }
-
-    public void setNext(Node next) {
-	this.next = next;
-    }
-
-}
+import list.theories.singly.Node;
+import list.theories.singly.SinglyTesting;
 
 /**
  *
@@ -38,44 +13,42 @@ class Node<E> {
  */
 public class QueueByLinkedList<E> implements QueueADT<E> {
 
+    private SinglyTesting<E> list = new SinglyTesting<>();
+
     @Override
     public void enqueue(E x) {
-
+        Node node = new Node(x);
+        list.insertLast(node);
     }
 
     @Override
     public void dequeue() {
-	throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        list.removeFirst();
     }
 
     @Override
     public E getFront() {
-	throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return (E) list.head.getData();
     }
 
     @Override
     public E getRear() {
-	throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isFull() {
-	throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return (E) list.tail.getData();
     }
 
     @Override
     public boolean isEmpty() {
-	throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return list.isEmply();
     }
 
     @Override
     public int size() {
-	throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return list.size();
     }
 
     @Override
     public void displayAll() {
-	throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

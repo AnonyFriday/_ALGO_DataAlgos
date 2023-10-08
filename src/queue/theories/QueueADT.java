@@ -22,9 +22,6 @@ public interface QueueADT<E> {
     // Get the last element without removing it
     public abstract E getRear();
 
-    // Check whether it's full or not
-    public abstract boolean isFull();
-
     // Check whether it's empty or not
     public abstract boolean isEmpty();
 
