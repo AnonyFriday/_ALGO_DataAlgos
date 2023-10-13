@@ -5,7 +5,9 @@
 package tree.theories.binarytree;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -19,19 +21,6 @@ public class BTree<T extends Comparable<T>> {
     // = Fields
     // ======================================
     BTNode<T> root;
-
-    // ======================================
-    // = Related Methods
-    // ======================================
-    public static void print(String prefix, BTNode node) {
-
-	// Applying 
-	if (node != null) {
-	    print(prefix + "\t", node.right);
-	    System.out.println(prefix + "|-- " + node.getData());
-	    print(prefix + "\t", node.left);
-	}
-    }
 
     // ======================================
     // = Create Methods
@@ -196,37 +185,37 @@ public class BTree<T extends Comparable<T>> {
 
     /**
      * Depth First Search Using post order iteration
-     * @return 
+     *
+     * @return
      */
-    public List<T> postOrderIteration() {
-	ArrayList<T> resultList = new ArrayList();
-	Stack<BTNode> stk = new Stack();
-	
-	BTNode currNode = this.root;
-
-	//     5 
-	//   1    4
-	//      2   3
-	// output: 0 2
-	// Push to stack with the order 5 1 4
-	// 
-	while (!stk.isEmpty() || currNode != null) {
-	    
-	   // Start from the left-most first
-	   while (currNode.left != null) {
-	       stk.push(currNode);
-	       currNode = currNode.left;
-	   }
-	   
-	   currNode = stk.pop();
-	   resultList.add((T) currNode);
-	   
-	   currNode = currNode.right;
-	}
-	
-	return resultList;
-    }
-
+//    public List<T> postOrderIteration() {
+//	ArrayList<T> resultList = new ArrayList();
+//	Stack<BTNode> stk = new Stack();
+//	
+//	BTNode currNode = this.root;
+//
+//	//     5 
+//	//   1    4
+//	//      2   3
+//	// output: 0 2
+//	// Push to stack with the order 5 1 4
+//	// 
+//	while (!stk.isEmpty() || currNode != null) {
+//	    
+//	   // Start from the left-most first
+//	   while (currNode.left != null) {
+//	       stk.push(currNode);
+//	       currNode = currNode.left;
+//	   }
+//	   
+//	   currNode = stk.pop();
+//	   resultList.add((T) currNode);
+//	   
+//	   currNode = currNode.right;
+//	}
+//	
+//	return resultList;
+//    }
     /**
      * Depth First Search Using Inorder Recursion
      *
@@ -283,6 +272,53 @@ public class BTree<T extends Comparable<T>> {
 	return resultList;
     }
 
+    // ======================================
+    // = Additional Methods
+    // ======================================
+    /**
+     * Breath First Search - Using Queue to solve the problem
+     *
+     * @return
+     */
+    public List<T> breadFirstSearch() {
+
+	ArrayList<T> resultList = new ArrayList<>();
+	Queue<BTNode> tmpQueue = new LinkedList<>();
+
+	if (isEmpty()) {
+	    return resultList;
+	}
+
+	BTNode currNode = this.root;
+	tmpQueue.add(currNode);
+
+	while (!tmpQueue.isEmpty()) {
+	    currNode = tmpQueue.remove();
+	    resultList.add((T) currNode.getData());
+
+	    // Adding both left and right of the current node to the list if found
+	    if (currNode.left != null) {
+		tmpQueue.add(currNode.left);
+	    }
+
+	    if (currNode.right != null) {
+		tmpQueue.add(currNode.right);
+	    }
+	}
+
+	return resultList;
+    }
+
+    public static void print(String prefix, BTNode node) {
+
+	// Applying 
+	if (node != null) {
+	    print(prefix + "\t", node.right);
+	    System.out.println(prefix + "|-- " + node.getData());
+	    print(prefix + "\t", node.left);
+	}
+    }
+
     /**
      * Check if the tree is empty or not
      *
@@ -303,11 +339,11 @@ public class BTree<T extends Comparable<T>> {
 	tree.addNodeIteration(2);
 	tree.addNodeIteration(0);
 
-	System.out.println(tree.preOrderIteration());
-	System.out.println(tree.postOrderRecursion());
-	System.out.println(tree.inOrderRecursion());
-	System.out.println(tree.inOrderIteration());
-
+//	System.out.println(tree.preOrderIteration());
+//	System.out.println(tree.postOrderRecursion());
+//	System.out.println(tree.inOrderRecursion());
+//	System.out.println(tree.inOrderIteration());
+	System.out.println(tree.breadFirstSearch());
 	print("", tree.root);
     }
 
