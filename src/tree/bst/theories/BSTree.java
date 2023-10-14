@@ -36,20 +36,25 @@ public class BSTree<T extends Comparable<T>> {
      * @param root
      * @return
      */
-    private BSTNode addNode(T data,
-                            BSTNode<T> root) {
+    private BSTNode addNode(BSTNode<T> root,
+                            T data) {
         // Ending point, if reaching the left or right leave, return a root and attach to left or right
         // Create new root with added data and attach to the tree
         if (root == null) {
-            return new BSTNode<>(data);
+            return new BSTNode(data);
         }
 
-        if (data.compareTo(root.data) < 0) {
-            root.left = addNode(data, (BSTNode<T>) root.left);
-        } else {
-            root.right = addNode(data, (BSTNode<T>) root.right);
+        // Finding the position to add the data
+        // if key = 0 means addinng the existed data, then return without addition
+        int key = data.compareTo(root.data);
+
+        if (key < 0) {
+            root.left = addNode((BSTNode<T>) root.left, data);
+        } else if (key > 0) {
+            root.right = addNode((BSTNode<T>) root.right, data);
         }
 
+        // Return back the root at each activation recall, like backtracking
         return root;
     }
 
@@ -58,18 +63,18 @@ public class BSTree<T extends Comparable<T>> {
      *
      * <br><br> If root is null then attach to the root, else calling addNode recursively
      *
+     * @param newData
      * @param data
      * @return
      */
-    public boolean addNode(T data) {
+    public void addNode(T newData) {
         // If empty, make it a nsew node
         if (isEmpty()) {
-            root = new BSTNode<>(data);
-            return true;
+            root = new BSTNode(newData);
         }
 
         // if not empty, then recursively adding new node as a leave  
-        return addNode(data, root) != null;
+        root = addNode(root, newData);
     }
 
     /**
@@ -78,10 +83,11 @@ public class BSTree<T extends Comparable<T>> {
      * @param newData
      */
     public void addNodeIteration(T newData) {
+        BSTNode newNode = new BSTNode(newData);
 
         // If empty then attach new node into it 
         if (isEmpty()) {
-            this.root = new BSTNode(newData);
+            this.root = newNode;
         } else {
             BSTNode prevNode = null;
             BSTNode currNode = this.root;
@@ -112,7 +118,6 @@ public class BSTree<T extends Comparable<T>> {
                 prevNode.right = new BSTNode(newData);
             }
         }
-
     }
 
     // ======================================
@@ -360,7 +365,7 @@ public class BSTree<T extends Comparable<T>> {
         int[] arr = new int[]{7, 1, 0, 8, 9, 2, 15, 6, 13, 14, 5};
 
         for (int i = 0; i < arr.length; i++) {
-            tree.addNodeIteration(arr[i]);
+            tree.addNode(arr[i]);
         }
 
         System.out.println(tree.breadthFirstTraversal());
