@@ -6,9 +6,8 @@ package tree.bst.projects;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import static tree.bst.projects.CountNodes.countNodes;
-import tree.bst.theories.BTNode;
-import tree.bst.theories.BTree;
+import tree.bst.theories.BSTree;
+import tree.node.BSTNode;
 
 /**
  *
@@ -27,7 +26,7 @@ public class FindTreeHeight {
      * @param root
      * @return
      */
-    public static int maxHeightTreeIteration(BTNode root) {
+    public static int maxHeightTreeIteration(BSTNode root) {
 
         // If the tree is empty then return 0
         if (root == null) {
@@ -36,9 +35,9 @@ public class FindTreeHeight {
 
         // Counting the total of nodes in the tree by applying breadth first search
         int height = 0;
-        Queue<BTNode> tmpQueue = new LinkedList<>();
+        Queue<BSTNode> tmpQueue = new LinkedList<>();
 
-        BTNode currNode = root;
+        BSTNode currNode = root;
 
         /**
          * 12
@@ -66,11 +65,11 @@ public class FindTreeHeight {
 
                 // At each node, adding left and right at next level if not nullF
                 if (currNode.left != null) {
-                    tmpQueue.add(currNode.left);
+                    tmpQueue.add((BSTNode) currNode.left);
                 }
 
                 if (currNode.right != null) {
-                    tmpQueue.add(currNode.right);
+                    tmpQueue.add((BSTNode) currNode.right);
                 }
             }
 
@@ -80,21 +79,21 @@ public class FindTreeHeight {
         return height;
     }
 
-    public static int maxHeightTreeRecursion(BTNode root) {
+    public static int maxHeightTreeRecursion(BSTNode root) {
 
         // If empty then return the height = 0
         if (root == null) {
             return 0;
         }
 
-        int maxHeightLeft = maxHeightTreeRecursion(root.left) + 1;
-        int maxHeightRight = maxHeightTreeRecursion(root.right) + 1;
+        int maxHeightLeft = maxHeightTreeRecursion((BSTNode) root.left) + 1;
+        int maxHeightRight = maxHeightTreeRecursion((BSTNode) root.right) + 1;
         return Math.max(maxHeightLeft, maxHeightRight);
     }
 
     // This class is for testing
     public static void main(String[] args) {
-        BTree<Integer> tree = new BTree<>();
+        BSTree<Integer> tree = new BSTree<>();
         tree.addNode(12);
         tree.addNode(9);
         tree.addNode(1);
@@ -104,7 +103,7 @@ public class FindTreeHeight {
         tree.addNodeIteration(2);
         tree.addNodeIteration(0);
         tree.addNodeIteration(1000);
-        BTree.print("\t\t", tree.root);
+        BSTree.print("\t\t", tree.root);
 
         System.out.println("Count: " + maxHeightTreeIteration(tree.root));
 
