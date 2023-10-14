@@ -16,7 +16,18 @@ import tree.bst.theories.BTree;
  */
 public class FindTreeHeight {
 
-    public static int maxHeightTree(BTNode root) {
+    /**
+     * Finding max height tree by using iteration
+     *
+     * <br><br>At each level, Applying the level order traversal (BFS)
+     *
+     * <br><br>After detecting the null node, increment the height by 1
+     *
+     *
+     * @param root
+     * @return
+     */
+    public static int maxHeightTreeIteration(BTNode root) {
 
         // If the tree is empty then return 0
         if (root == null) {
@@ -28,24 +39,42 @@ public class FindTreeHeight {
         Queue<BTNode> tmpQueue = new LinkedList<>();
 
         BTNode currNode = root;
+
+        /**
+         * 12
+         * 9 100
+         * 1 101
+         * 0 2 102
+         * 1000
+         *
+         * after 12, level 1, height = 1
+         * after 9, 100, level 2, height = 2
+         * after 1, 101, level 3, height = 3
+         * after 0,2,102, level 4, height = 4
+         * after 1000, level 5, height = 5
+         */
         tmpQueue.add(currNode);
 
         while (!tmpQueue.isEmpty()) {
-            currNode = tmpQueue.remove();
 
-            // If the queue is empty then increment the height to 1
-            if (tmpQueue.isEmpty()) {
-                height++;
+            // Extract No. of nodes in queue
+            int nodesInALevel = tmpQueue.size();
+
+            // Looping until reaching the right most node at each level
+            while (nodesInALevel-- > 0) {
+                currNode = tmpQueue.remove();
+
+                // At each node, adding left and right at next level if not nullF
+                if (currNode.left != null) {
+                    tmpQueue.add(currNode.left);
+                }
+
+                if (currNode.right != null) {
+                    tmpQueue.add(currNode.right);
+                }
             }
 
-            // Adding both left and right of the current node to the list if found
-            if (currNode.left != null) {
-                tmpQueue.add(currNode.left);
-            }
-
-            if (currNode.right != null) {
-                tmpQueue.add(currNode.right);
-            }
+            height++;
         }
 
         return height;
@@ -77,7 +106,7 @@ public class FindTreeHeight {
         tree.addNodeIteration(1000);
         BTree.print("\t\t", tree.root);
 
-        System.out.println("Count: " + maxHeightTree(tree.root));
+        System.out.println("Count: " + maxHeightTreeIteration(tree.root));
 
         System.out.println("Count Recursion: " + maxHeightTreeRecursion(tree.root));
     }
