@@ -326,6 +326,62 @@ public class BSTree<T extends Comparable<T>> {
     }
 
     // ======================================
+    // = Delete Methods (0,1,2 child nodes)
+    // ======================================
+    public int countChildrenOfTerminal(BSTNode tNode) {
+
+        // No children
+        if (tNode.left == null && tNode.right == null) {
+            return 0;
+        }
+
+        // If 2 child, then return 2
+        if (tNode.left != null && tNode.right != null) {
+            return 2;
+        } else {
+
+            // Return 1 if only 1 child
+            return 1;
+        }
+    }
+
+    /**
+     * Delete a target node having 1 child
+     *
+     *
+     * <br><br>If the node is a root, then just delete it
+     * <br><br>If the node is a terminal node having 1 child, then remove it,
+     * <br><br>attach the link from the father to its child based on left or right
+     *
+     * @param deletedNode
+     * @return
+     */
+    public BSTNode deleteOneChild(BSTNode fatherNode,
+                                  BSTNode deletedNode) {
+
+        // If the deletedNode is the root
+        // deletedNode -> child
+        if (deletedNode == root) {
+            root = (root.left != null)
+                   ? (BSTNode) root.left
+                   : (BSTNode) root.right;
+        } else {
+
+            // Father -> deletedNode -> Child
+            BSTNode grandChild = (deletedNode.left != null)
+                                 ? (BSTNode) deletedNode.left
+                                 : (BSTNode) deletedNode.right;
+            if (fatherNode.right == deletedNode) {
+                fatherNode.right = grandChild;
+            } else {
+                fatherNode.left = grandChild;
+            }
+        }
+
+        return deletedNode;
+    }
+
+    // ======================================
     // = Additional Methods
     // ======================================
     /**
