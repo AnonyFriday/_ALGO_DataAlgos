@@ -20,29 +20,38 @@ public class MaximumValueInBTree {
      *
      * The maximum will be on the right
      *
-     * @param <T>      Any class being wrapped in the BSTNode
-     * @param root     A root of bstree
-     * @param prevNode a previous node before a root
+     * @param <T>  Any class being wrapped in the BSTNode
+     * @param root A root of bstree
      * @return a max node
      */
-    public static <T> T getMaxValue(BSTNode root,
-                                    BSTNode prevNode) {
+    public static <T> T getMaxValue(BSTNode root) {
 
         // If empty then return null
         if (root == null) {
-            return (T) prevNode.data;
+            return null;
         }
 
-        return getMaxValue((BSTNode) root.right, root);
+        // If only 1 node, return the right most node
+        if (root.right == null) {
+            return (T) root.data;
+        }
+
+        return getMaxValue((BSTNode) root.right);
     }
 
     /**
      * Getting the right most value in the tree using recursive approach
+     *
      * @param <T>
      * @param root
-     * @return 
+     * @return
      */
     public static <T> T getMaxValueIterative(BSTNode root) {
+
+        // If empty then return null
+        if (root == null) {
+            return null;
+        }
 
         BSTNode currNode = root;
         while (currNode.right != null) {
@@ -60,7 +69,7 @@ public class MaximumValueInBTree {
         }
 
         print("", tree.root);
-        System.out.println("Max: " + getMaxValue(tree.root, tree.root).toString());
-        System.out.println("Max: " + getMaxValueIterative(tree.root).toString());
+        System.out.println("Max: " + getMaxValue(tree.root).toString());
+        System.out.println("Max: " + getMaxValueIterative(null));
     }
 }

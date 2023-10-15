@@ -5,6 +5,7 @@
 package tree.bst.projects;
 
 import tree.bst.theories.BSTree;
+import tree.bst.theories.BSTree;
 import static tree.bst.theories.BSTree.print;
 import tree.node.BSTNode;
 
@@ -24,15 +25,19 @@ public class MinimumValueInTree {
      * @param prevNode a previous node before a root
      * @return a min node
      */
-    public static <T> T getMinValue(BSTNode root,
-                                    BSTNode prevNode) {
+    public static <T> T getMinValue(BSTNode root) {
 
         // If empty then return null
         if (root == null) {
-            return (T) prevNode.data;
+            return null;
         }
 
-        return getMinValue((BSTNode) root.left, root);
+        // If only 1 root, then return a root
+        if (root.left == null) {
+            return (T) root.data;
+        }
+
+        return getMinValue((BSTNode) root.left);
     }
 
     public static void main(String[] args) {
@@ -44,6 +49,8 @@ public class MinimumValueInTree {
         }
 
         print("", tree.root);
-        System.out.println("Min: " + getMinValue(tree.root, tree.root).toString());
+        System.out.println("Min: " + getMinValue(tree.root).toString());
+        System.out.println("Min: " + getMinValue(null));
+
     }
 }
