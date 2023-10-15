@@ -6,6 +6,7 @@ package tree.bst.projects;
 
 import static tree.bst.projects.MinimumValueInTree.getMinValue;
 import tree.bst.theories.BSTree;
+import tree.bst.theories.BSTree;
 import static tree.bst.theories.BSTree.print;
 import tree.node.BSTNode;
 import tree.node.Fish;
@@ -53,8 +54,8 @@ public class SearchOnTree {
             new Fish("A", 20),
             new Fish("A", -1)};
 
-        for (int i = 0; i < arr.length; i++) {
-            tree.addNodeIteration(arr[i]);
+        for (Fish fish : arr) {
+            tree.addNode(fish);
         }
 
         BSTree.print("\t", tree.root);

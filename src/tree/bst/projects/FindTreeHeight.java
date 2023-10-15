@@ -7,6 +7,7 @@ package tree.bst.projects;
 import java.util.LinkedList;
 import java.util.Queue;
 import tree.bst.theories.BSTree;
+import tree.bst.theories.BSTree;
 import tree.node.BSTNode;
 
 /**
@@ -79,6 +80,12 @@ public class FindTreeHeight {
         return height;
     }
 
+    /**
+     * Finding Height of the tree using recursion
+     *
+     * @param root root of tree
+     * @return height of the tree
+     */
     public static int maxHeightTreeRecursion(BSTNode root) {
 
         // If empty then return the height = 0
