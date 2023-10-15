@@ -5,6 +5,7 @@
 package tree.bst.projects;
 
 import tree.bst.theories.BSTree;
+import tree.bst.theories.BSTree;
 import static tree.bst.theories.BSTree.print;
 import tree.node.BSTNode;
 
@@ -35,6 +36,21 @@ public class MaximumValueInBTree {
         return getMaxValue((BSTNode) root.right, root);
     }
 
+    /**
+     * Getting the right most value in the tree using recursive approach
+     * @param <T>
+     * @param root
+     * @return 
+     */
+    public static <T> T getMaxValueIterative(BSTNode root) {
+
+        BSTNode currNode = root;
+        while (currNode.right != null) {
+            currNode = (BSTNode) currNode.right;
+        }
+        return (T) currNode.data;
+    }
+
     public static void main(String[] args) {
         BSTree<Integer> tree = new BSTree<>();
         int[] arr = new int[]{7, 1, 0, 8, 9, 2, 15, 6, 13, 14, 5, 1000};
@@ -45,5 +61,6 @@ public class MaximumValueInBTree {
 
         print("", tree.root);
         System.out.println("Max: " + getMaxValue(tree.root, tree.root).toString());
+        System.out.println("Max: " + getMaxValueIterative(tree.root).toString());
     }
 }
