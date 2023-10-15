@@ -328,6 +328,12 @@ public class BSTree<T extends Comparable<T>> {
     // ======================================
     // = Delete Methods (0,1,2 child nodes)
     // ======================================
+    /**
+     * Count children of the terminal nodes
+     *
+     * @param tNode
+     * @return
+     */
     public int countChildrenOfTerminal(BSTNode tNode) {
 
         // No children
@@ -343,6 +349,30 @@ public class BSTree<T extends Comparable<T>> {
             // Return 1 if only 1 child
             return 1;
         }
+    }
+
+    /**
+     * Delete zero child of the deletedNode
+     *
+     * @param fatherNode
+     * @param deletedNode
+     * @return
+     */
+    public BSTNode deleteZeroChild(BSTNode fatherNode,
+                                   BSTNode deletedNode) {
+
+        // root
+        if (deletedNode == root && fatherNode == null) {
+            root = null;
+        } else {
+            // terminal -> deletedNode
+            if (fatherNode.left == deletedNode) {
+                fatherNode.left = null;
+            } else {
+                fatherNode.right = null;
+            }
+        }
+        return deletedNode;
     }
 
     /**
@@ -380,6 +410,60 @@ public class BSTree<T extends Comparable<T>> {
 
         return deletedNode;
     }
+
+    /**
+     * Delete the 2 child of deletedNode by using Coping technique
+     *
+     * @param deletedNode
+     * @return
+     */
+    public BSTNode deleteTwoChildByCoping(BSTNode deletedNode) {
+
+        // Find the predecessor, father of the left subtree under the deleted Node
+        BSTNode rightMostFather = deletedNode;
+        BSTNode rightMost = (BSTNode) deletedNode.left;
+
+        while (rightMost.right != null) {
+            rightMostFather = rightMost;
+            rightMost = (BSTNode) rightMost.right;
+        }
+
+        // Copying the rightMost to the deletedNode
+        /* 
+         *          3
+         *      1             5  <-- delete
+         *        rMost --> 4    8
+         * e.g. delete 5, rightMost = 4, rightMostFather = 5
+         * 
+         *          3
+         *      1          4
+         * rev rMost --> 4    8
+         * using delete noChild, or oneChild
+         */
+        deletedNode.data = rightMost.data;
+
+        // Remove the rMost node
+        int childs = countChildrenOfTerminal(rightMost);
+
+        // Remove if the rMost has 1 child or 0 child
+        if (childs == 0) {
+            return deleteZeroChild(rightMostFather, rightMost);
+        } else {
+            return deleteOneChild(rightMostFather, rightMost);
+        }
+    }
+
+//    /**
+//     * Delete the 2 child of deletedNode by using Merging technique
+//     *
+//     * <br><br>The merging will probably increase the height of the tree
+//     *
+//     * @param deletedNode
+//     * @return
+//     */
+//    public BSTNode deleteTwoChildByMerging(BSTNode deletedNode) {
+//
+//    }
 
     // ======================================
     // = Additional Methods
