@@ -120,6 +120,16 @@ public class BSTree<T extends Comparable<T>> {
         }
     }
 
+    /**
+     * Add multiple nodes in a single pass
+     * @param groups 
+     */
+    public void addNodes(Comparable<T>... groups) {
+        for (Comparable data : groups) {
+            this.addNode((T) data);
+        }
+    }
+
     // ======================================
     // = Read Methods
     // ======================================
@@ -464,7 +474,6 @@ public class BSTree<T extends Comparable<T>> {
 //    public BSTNode deleteTwoChildByMerging(BSTNode deletedNode) {
 //
 //    }
-
     // ======================================
     // = Additional Methods
     // ======================================
