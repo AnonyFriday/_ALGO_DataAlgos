@@ -12,7 +12,7 @@ package tree.node;
 public class BSTNode<T extends Comparable<T>> extends TNode<T> {
 
     // ======================================
-    // = Fields
+    // = Constructor
     // ======================================
     public BSTNode(T data) {
         super(data);
