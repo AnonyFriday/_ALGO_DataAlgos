@@ -21,9 +21,9 @@ public class AVLNode<T extends Comparable<T>> {
     // = Fields
     // ======================================
     public AVLNode(T data) {
-        left = right = null;
-        data = data;
-        height = 1;
+        this.left = this.right = null;
+        this.data = data;
+        this.height = 1;
     }
 
     public void setHeight(AVLNode<T> leftRoot,
