@@ -7,9 +7,9 @@ package tree.bst.projects;
 import static tree.bst.projects.MinimumValueInTree.getMinValue;
 import tree.bst.theories.BSTree;
 import tree.bst.theories.BSTree;
-import static tree.bst.theories.BSTree.print;
 import tree.node.BSTNode;
 import tree.node.Fish;
+import static tree.bst.theories.BSTree.printAlignedHorizontally;
 
 /**
  *
@@ -58,7 +58,7 @@ public class SearchOnTree {
             tree.addNode(fish);
         }
 
-        BSTree.print("\t", tree.root);
+        BSTree.printAlignedHorizontally(tree.root, "\t");
 
         // Not found Node
         System.out.println("Node: " + searchNode(tree.root, new Fish("A", 15)));

@@ -6,8 +6,8 @@ package tree.bst.projects;
 
 import tree.bst.theories.BSTree;
 import tree.bst.theories.BSTree;
-import static tree.bst.theories.BSTree.print;
 import tree.node.BSTNode;
+import static tree.bst.theories.BSTree.printAlignedHorizontally;
 
 /**
  *
@@ -48,7 +48,7 @@ public class MinimumValueInTree {
             tree.addNodeIteration(arr[i]);
         }
 
-        print("", tree.root);
+        printAlignedHorizontally(tree.root, "");
         System.out.println("Min: " + getMinValue(tree.root).toString());
         System.out.println("Min: " + getMinValue(null));
 

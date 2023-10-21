@@ -6,8 +6,8 @@ package tree.bst.projects;
 
 import tree.bst.theories.BSTree;
 import tree.bst.theories.BSTree;
-import static tree.bst.theories.BSTree.print;
 import tree.node.BSTNode;
+import static tree.bst.theories.BSTree.printAlignedHorizontally;
 
 /**
  *
@@ -68,7 +68,7 @@ public class MaximumValueInBTree {
             tree.addNodeIteration(arr[i]);
         }
 
-        print("", tree.root);
+        printAlignedHorizontally(tree.root, "");
         System.out.println("Max: " + getMaxValue(tree.root).toString());
         System.out.println("Max: " + getMaxValueIterative(null));
     }

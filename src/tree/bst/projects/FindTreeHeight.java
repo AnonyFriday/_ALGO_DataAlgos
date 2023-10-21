@@ -110,7 +110,7 @@ public class FindTreeHeight {
         tree.addNodeIteration(2);
         tree.addNodeIteration(0);
         tree.addNodeIteration(1000);
-        BSTree.print("\t\t", tree.root);
+        BSTree.printAlignedHorizontally(tree.root, "\t\t");
 
         System.out.println("Count: " + maxHeightTreeIteration(tree.root));
 
