@@ -1,0 +1,250 @@
+//////////////////////////////
+// What is a tree
+//////////////////////////////
+
+Applications:
+- Organization charts
+- File systems
+- Programming Environments
+
+Every Node except a root node has a unique parent
+
+Empty structure is an empty tree
+
+Non-empty tree consists of a root and its children, where these children are also trees
+
+//////////////////////////////
+// Tree Terminology
+//////////////////////////////
+
+Root: unique node without a parent
+Parent
+Child
+Siblings: 
+    children of the same parents
+Descendants: 
+    a set of node under that node are Descendants 
+    child, granchild, great-grandchild, etc.
+Ancestors: 
+    From any node, the path contains a node to the root node are ancestors
+    parent, grandparent, great-grandparent, etc.
+Degree: 
+    number of children of that node
+    Degree = 0: leaf nodes, external node
+    Degree > 0: non-leaf nodes, internal nodes, 
+Degree of a tree
+    The maximum degree of a node in the tree
+Internal: 
+    node with at least 1 child (is also including root)
+    non-terminal node
+External
+    node without children
+    leaf
+Level of a node (depth) 
+    By default it is 1 (other documents said 0): level of the root
+    If a father has level i then its children has level i + 1
+Height of a tree
+    Maximum level in a tree
+    A single node is a tree of height 1
+    Empty tree has the height of 0
+Height of a node p
+    Is the height of the sub-tree with root p
+Forest
+    A collection of trees
+
+Path
+    from a root through a unique sequences of edges (arcs)
+    Number of arces in a pth is called the length of the path
+Edges and Paths 
+
+//////////////////////////////
+// Ordered Tree
+//////////////////////////////
+
+An ordered tree
+- a meaningful linear order among the children of each node
+- cay da duoc sap xep
+
+//////////////////////////////
+// Binary Tree (Full, Complete, 
+                Perfect, Balanced, Height-balanced
+                Decision, Threaded, Ordered, AVL)
+//////////////////////////////
+
+Full Binary Tree
+    a node can only has 0 or 2 children
+
+Complete Binary Tree
+    When filling out all node at each level from to - bottom, left - right
+    Except the last level, but it has to be on the left
+
+    leaves = non-terminals + 1
+
+Height-balanced
+    For every internal node p of T, the heighest of the children of p differ by at most 1
+
+Perfect Binary Tree
+    Complete + full
+    A non-terminal node only have 2 children
+    All leaves are at the same level, all path from root to leaves are at the same
+    
+    Min height = logbase2 of (n+1)
+
+Decision Tree
+    a binary tree in which all nodes have either 0 or 2 nonempty children
+
+Threaded Tree
+    is a tree in which node's references are used to point to nodes' predecessor
+    or successor. Stack is not needed in Depth-first traversals
+
+Ordered Tree
+
+//////////////////////////////
+// Binary Tree
+//////////////////////////////
+
+An empty tree is an binary tree
+
+Unlabelled Node & Label Node
+    Given number of nodes, how many shape of binary tree can be maked based on UN and LN
+        UN: Catalon Number = (2nCn) / (n+1)
+        LN: ((2nCn) / (n+1)) * n!
+    ((2nCn) / (n+1)): number of shapes
+    n! : fillings, or permutation
+
+A proper binary tree
+    full binary tree or 2-tree
+    every node other than the leaves has 2 children
+
+A perfect binary tree
+    
+A complete binary tree
+    all non-terminal nodes have both their children
+    all leaves are at the same level
+    
+    leaves = non-ternimals + 1
+
+A decision tree
+    all nodes have either 0 or two non empty children
+    yes - no
+        root: start the decision process
+        non-terminal node is a test
+        a leaf is a specific final decision
+
+Binary Tree Traversals
+    Breadth-first traversal:
+    Depth-first traversal
+        Pre-order: Node - L - R
+        In-order: 
+
+//////////////////////////////
+// The tree abstract data type
+//////////////////////////////
+
+Approach 1: Using 1D array
+    case 1: there are rules to specifiy father-child relations
+        left child index = 2 * father index + 1
+        right child inde = 2 * father index + 2
+        father index = floor(child index/2)
+
+    case 2: there is no rule to specify father-child relations
+        root element at position 0
+        child indices must be stored in 3 arrays (info, left, right)
+            If dont have child, then the value at left or right
+            array will be -1
+
+Approach 2: Using a linked data structure
+    
+//////////////////////////////
+// Binary Search Tree
+//////////////////////////////
+
+What is that
+    - Is an orderly binary tree whose nodes's value are ordered from left to right
+
+Natural Orders
+    - On numbers: numerical comparison
+    - On characters, strings: Dictionary order -> ASCII comparison
+
+///////////////////////////////////
+// Balancing the Binary Search Tree 
+///////////////////////////////////
+
+What is the Balanced Binary Tree
+- If the difference in heigh of both sub-tree of any node in the  reee is either 0 or 1
+
+
+Case 1: The BST is empty, input is an array
+    Order of values in the array which will be added must be considered appropriately
+
+    - Rebuild the BST from stratch based on array
+        (Step 1: Copy all tree nodes to the array) - O(n), space is O(n)
+
+        (Step 2: sort the array) -> O(nlogn) or O(n^2)
+
+        (Step 3: clear the tree) -> System-level cost
+
+        (Step 4: call balance() method to rebuild the tree) - O(n^2) or O(nlogn)
+
+Case 2: The BST is given, but it's not balanced
+    A balancing algorithm must be implemented
+
+    - The DSW algorithm (Day-Stout-Warren algorithm)
+        (Step 1: Create a backbone using right rotation 
+                to transform a BST to transform a BST 
+                to right-degraded BST) -> O(n)
+
+        (Step 2: Create balanced tree using left rotations to
+                transform it to balanced BST) -> O(n)
+    
+//////////////////////////////
+// Self-Balanced BSTs
+// (AVL trees)
+//////////////////////////////
+
+AVL trees
+    When inserting or removing may cause the tree un-balanced State of some nodes may change)
+    In this case, the tree needs re-balance using rotations
+
+
+Calculate the balance factor
+
+Rotation
+    Single rotation
+        - Left rotation
+        - Right rotation
+    Double rotation
+        - Left-right rotation
+        - Right-left rotation
+
+//////////////////////////////
+// Binary Heap (Max & Min)
+//////////////////////////////
+
+What is the heap
+    A collection whose items are layered
+    A special binary tree, based on comparison values on father node and child node
+        Max Heap
+        Min Heap
+
+Heap in memory
+    A array-based binary tree
+    Item in the index 0 is the tree's root
+    Values are put to the tree based on layer in left-to-right direction
+    We can have multiple heap
+        As long as root -> children and nodes are layered from left to right
+
+Father index, Child index
+    Father Idx = floor(child Idx / 2)
+    Child Idx (left) = father * 2 + 1
+    Child Idx (right) = father * 2 + 2
+
+Applications
+    A heap can be used as priority queue
+    Heap sort
+    
+
+
+
+
+
