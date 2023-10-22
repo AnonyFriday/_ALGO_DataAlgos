@@ -12,11 +12,6 @@ import java.util.LinkedList;
  */
 public class CustomQueue<T> extends LinkedList<T> {
 
-    // Constructor
-    public boolean isEmpty() {
-        return this.isEmpty();
-    }
-
     public void enqueue(T el) {
         this.add(el);
     }
