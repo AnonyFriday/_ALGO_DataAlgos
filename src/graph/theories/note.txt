@@ -1,0 +1,92 @@
+//////////////////////////////
+// Definitions
+//////////////////////////////
+
+What is a graph
+    A collection of vertices (or nodes, the V set) and the connections (called as edges, the E set between them(
+    G = {V, E}
+
+Graph Classification
+    Based on direction of edges's direction
+    Based on No. of edges connection 2 vertices
+    Based on whether or not edges are evaluated (An edge may have proper data)
+    Mix graph: a graph having multiple properties
+
+----------------------------------------
+Classification on Edge's direction
+    Undirected Graph
+    Directed Graph (digraph)
+        each edge has it’s own direction (orientation)
+
+Classification on No. of edges between vertices
+    Simple graph
+        2 distinct vertices joining only 1 edge
+    Multigraph
+        2 vertices can be joined by multiple edges
+    Pseudograph
+        Allow loops at 1 vertex
+
+Classification based on whether or not edges are evaluated
+    Weighted graph
+        If each edge has an assigned number
+    Un-weighted graph
+----------------------------------------
+
+Degree of a vertex
+    Undirected graphs
+        deg(v): no. of edges connecting with it
+    Directed graphs
+        In-degree, deg+(v): no. edges -> vertex (to vertex)
+        Out-degree, deg-(v): vertex -> no. edges (from a degree)
+        Total-degree, deg(v) = deg+(v) + deg-(v)
+
+Paths and circuit/circle
+    Path
+        is a group of consecutive edges
+    
+    Circuit/circle
+        is a closed path
+
+Connectivity
+    A graph is connected if and only if there exist a path between 2 arbitrary different vertices
+    
+    ----------------------------------
+    Strong connected
+        if there is a path from A -> B and B -> A
+
+    Weak connected
+        If there is a path from A -> B, not B -> A
+    ----------------------------------
+
+    Articulation point/cut vertex
+        If you cut a special vertex, then it cause the graph unconnected
+
+    Bridge/cut edge
+        If you cut a special edge, then it cause the graph unconnected
+
+//////////////////////////////
+// Graph Representation
+//////////////////////////////
+
+2 ways to present data of a graph
+    Using matrix (requires huge memory block)
+        
+        -----------------------------------------
+        adjacency matrix (ma trận đỉnh kề)
+            Can change to cost adacency matrix if weight is counted
+        incidence matrix (ma trận cạnh nối)
+        -----------------------------------------
+
+    Using adjacency list (linked data structure, save memory)
+        Can change to cost adjacency matrix if weight is counted
+
+//////////////////////////////
+// Graph Traversals
+//////////////////////////////
+
+Breadth-First Traversal
+    
+
+Depth-First Traversal
+    Def 
+        1 for loop to 
