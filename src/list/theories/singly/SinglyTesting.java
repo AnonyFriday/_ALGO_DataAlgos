@@ -5,49 +5,23 @@
 package list.theories.singly;
 
 /**
- * Create the Node for the List data structure
- *
- * @author duyvu
- */
-class Node<E> {
-
-    private E data;
-    protected Node nextNode;
-
-    // Parameterized Constructor
-    public Node(E data) {
-	this.data = data;
-	nextNode = null;
-    }
-
-    // Getters & Setters
-    public E getData() {
-	return data;
-    }
-
-    public void setData(E data) {
-	this.data = data;
-    }
-}
-
-/**
  * Simulating the Linked List of Value
  *
  * @author duyvu
  */
-public class SinglyTesting<E> {
+public class SinglyTesting<E extends Comparable<E>> {
 
-    private Node head;
-    private Node tail;
-    private int count;
+    public Node head;
+    public Node tail;
+    private int size;
 
     /**
      * At first, initialize the head
      */
     public SinglyTesting() {
-	head = null;
-	tail = null;
-	count = 0;
+        head = null;
+        tail = null;
+        size = 0;
     }
 
     // =============================
@@ -58,13 +32,14 @@ public class SinglyTesting<E> {
      *
      * @param node
      */
-    private void insertIfListEmpty(Node node) {
+    private void addIfListEmpty(E x) {
+        Node newNode = new Node(x);
 
-	// If node is the first element in the array
-	head = node;
-	tail = node;
-	node.nextNode = null;
-	this.count++;
+        // If node is the first element in the array
+        if (newNode != null) {
+            head = tail = newNode;
+            this.size++;
+        }
     }
 
     /**
@@ -72,47 +47,46 @@ public class SinglyTesting<E> {
      *
      * @param node
      */
-    public void insertFirst(Node node) {
-	// If the node is null
-	if (node == null) {
-	    return;
-	}
+    public void addFirst(E x) {
 
-	// If the list is empty
-	if (this.isEmply()) {
-	    insertIfListEmpty(node);
-	} else {
-	    node.nextNode = this.head;
-	    this.head = node;
+        // If the list is empty
+        if (this.isEmpty()) {
+            addIfListEmpty(x);
+        } else {
 
-	    // Increment number of nodes by 1
-	    this.count++;
-	}
+            // If the list is not empty
+            Node newNode = new Node(x);
+            newNode.nextNode = this.head;
+            this.head = newNode;
+
+            // Increment number of nodes by 1
+            this.size++;
+        }
     }
 
     /**
-     * Add the Node the end of the list
+     * Add the Node to the end of the list
      *
      * The tail reference is pointing to the last object Node Set the nextNode of the last object Node to the newly
      * added Node Set the tail reference pointing to the newly added Node
      *
      * @param node: newly created node
      */
-    public void insertLast(Node node) {
-	if (node == null) {
-	    return;
-	}
+    public void addLast(E x) {
 
-	// If the list is empty
-	if (this.isEmply()) {
-	    insertIfListEmpty(node);
-	} else {
-	    this.tail.nextNode = node;
-	    this.tail = node;
+        // If the list is empty
+        if (this.isEmpty()) {
+            addIfListEmpty(x);
+        } else {
 
-	    // Increment number of nodes by 1
-	    this.count++;
-	}
+            // If the list is not empty
+            Node newNode = new Node(x);
+            this.tail.nextNode = newNode;
+            this.tail = newNode;
+
+            // Increment number of nodes by 1
+            this.size++;
+        }
     }
 
     /**
@@ -121,33 +95,38 @@ public class SinglyTesting<E> {
      * @param node
      * @param pos
      */
-    public void add(Node node,
-	    int pos) {
-	// when no elements, adding to the list
-	if (this.isEmply()) {
-	    this.insertIfListEmpty(node);
-	    return;
-	} else if (pos == 0) {
-	    this.insertFirst(node);
-	    return;
-	} else if (pos == this.count - 1) {
-	    this.insertLast(node);
-	    return;
-	} else if (pos >= this.count) {
-	    return;
-	}
+    public void add(E x,
+                    int pos) {
+        int idx = pos - 1;  // start from index 0, not 1
 
-	// seting the temp node before the target position
-	Node temp = this.head;
-	while (pos > 1) {
-	    temp = temp.nextNode;
-	    pos--;
-	}
+        // when no elements, adding to the list
+        if (this.isEmpty()) {
+            this.addIfListEmpty(x);
+            return;
+        } else if (idx == 0) {
+            this.addFirst(x);
+            return;
+        } else if (idx == this.size) {
+            this.addLast(x);
+            return;
+        } else if (idx > this.size || idx < 0) {
+            return;
+        }
 
-	// Switching a referecne of temp node and next node
-	node.nextNode = temp.nextNode;
-	temp.nextNode = node;
-	this.count++;
+        Node temp = this.head;
+        Node newNode = new Node(x);
+        int count = 1;             // prev of the inserted => -1, not 0
+
+        // finding the previous node of the inserted position
+        while (count < idx && temp != null) {
+            temp = temp.nextNode;
+            count++;
+        }
+
+        // Switching a referecne of temp node and next node
+        newNode.nextNode = temp.nextNode;
+        temp.nextNode = newNode;
+        this.size++;
     }
 
     // =============================
@@ -156,17 +135,72 @@ public class SinglyTesting<E> {
     /**
      * Traverse the whole link list
      */
-    public void traverse() {
+    public void traversal() {
 
-	// Create a pointer pointing to head
-	Node pointer = head;
+        // Create a pointer pointing to head
+        Node pNode = head;
 
-	// Traversing until reaching null pointer at the tail
-	// - pointing to the next object Node stored inside the pointer.nextNode
-	while (pointer != null) {
-	    System.out.println("Node: " + pointer.getData());
-	    pointer = pointer.nextNode;
-	}
+        // Traversing until reaching null pointer at the tail
+        // - pointing to the next object Node stored inside the pointer.nextNode
+        while (pNode != null) {
+            System.out.println("Node: " + pNode.getData());
+            pNode = pNode.nextNode;
+        }
+    }
+
+    /**
+     * Reverse the list using 3 pointers
+     */
+    public void reverseNodes() {
+
+        // If having no or only 1 element, return null
+        if (this.isEmpty() || this.size == 1) {
+            return;
+        }
+
+        // Create 3 pointers to reverse the list
+        Node pCurr = this.head;
+        Node pPrev = null;
+        Node pNext = this.head.nextNode;
+
+        // A -> B -> C -> D -> NULL
+        // Head           Tail
+        // NULL <- A <- B <- C <- D
+        //         Tail           Head
+        while (pCurr != null) {
+            pCurr.nextNode = pPrev;
+            pPrev = pCurr;
+            pCurr = pNext;
+
+            // Incase pNext equals to null, so that it cannot 
+            // extract nextNode at the end
+            if (pNext != null) {
+                pNext = pNext.nextNode;
+            }
+        }
+
+        // Linking back tail and head
+        this.tail = this.head;
+        this.head = pPrev;
+    }
+
+    /**
+     * Instead of reversing the nodes, we reverse the data on node
+     */
+    public void reverseData() {
+
+        int leftIdx = 0;
+        int rightIdx = this.size - 1;
+
+        for (; leftIdx < rightIdx; leftIdx++, rightIdx--) {
+            Node pLeft = get(leftIdx + 1); // e.g. get(position) -> index 0 = position 1
+            Node pRight = get(rightIdx + 1);
+
+            // Swapping first and last
+            E tmp = (E) pLeft.getData();
+            pLeft.setData(pRight.getData());
+            pRight.setData(tmp);
+        }
     }
 
     // =============================
@@ -179,26 +213,26 @@ public class SinglyTesting<E> {
      * afterward
      */
     public void removeFirst() {
-	if (this.isEmply()) {
-	    return;
-	}
+        if (this.isEmpty()) {
+            return;
+        }
 
-	// contains only 1 node
-	if (this.head.nextNode == null) {
-	    this.head = null;
-	    this.count--;
-	    return;
-	}
+        // contains only 1 node
+        if (head.nextNode == null) {
+            head = tail = null;
+            this.size--;
+            return;
+        }
 
-	// Create a temp node poining to the next Node after Head Node
-	Node temp = this.head.nextNode;
+        // Create a temp node poining to the next Node after Head Node
+        Node temp = this.head.nextNode;
 
-	// Set the current head node = null 
-	// In fact, if no pointer points to the Object, the Object will be terminated by the Garbage Collector
+        // Set the current head node = null 
+        // In fact, if no pointer points to the Object, the Object will be terminated by the Garbage Collector
 //        this.head = null;
-	// Set the back the head node to the next node
-	this.head = temp;
-	this.count--;
+        // Set the back of the head node to the next node
+        this.head = temp;
+        this.size--;
     }
 
     /**
@@ -209,51 +243,59 @@ public class SinglyTesting<E> {
      *
      */
     public void removeLast() {
-	if (this.isEmply()) {
-	    return;
-	}
+        if (this.isEmpty()) {
+            return;
+        }
 
-	// contains only 1 node
-	if (this.head.nextNode == null) {
-	    this.head = null;
-	    this.count--;
-	    return;
-	}
+        // contains only 1 node
+        if (this.head.nextNode == null) {
+            this.head = this.tail = null;
+            this.size--;
+            return;
+        }
 
-	// Iterating until reaching the next-to-tail node
-	Node temp = this.head;
-	while (temp.nextNode != this.tail) {
-	    temp = temp.nextNode;
-	}
+        // Iterating until reaching the next-to-tail node
+        Node temp = this.head;
+        while (temp.nextNode != this.tail) {
+            temp = temp.nextNode;
+        }
 
-	this.tail = temp;
-	this.tail.nextNode = null; // Setting null to deference the next node, release the last Object to GC
-	this.count--;
+        // Setting null to deference the next node, release the last Object to GC
+        this.tail = temp;
+        this.tail.nextNode = null;
+        this.size--;
     }
 
     public void removeAt(int pos) {
 
-	// Does not remove when the list is empty
-	if (this.isEmply()) {
-	    return;
-	} else if (pos == 0) {
-	    this.removeFirst();
-	    return;
-	} else if (pos == this.count - 1) {
-	    this.removeLast();
-	    return;
-	}
+        // Does not remove when the list is empty
+        int idx = pos - 1;
 
-	// Track the node before the target node
-	Node temp = this.head;
-	Node tempAfter = temp.nextNode;
-	while (pos > 2) {
-	    temp = temp.nextNode;
-	    tempAfter = tempAfter.nextNode;
-	    pos--;
-	}
+        if (this.isEmpty()) {
+            return;
+        } else if (idx < 0 || idx >= this.size) {
+            return;
+        } else if (idx == 0) {
+            this.removeFirst();
+            return;
+        } else if (idx == this.size - 1) {
+            this.removeLast();
+            return;
+        }
 
-	temp.nextNode = tempAfter.nextNode;
+        // Track the node before the target node
+        Node temp = this.head;
+
+        int count = 0;
+
+        while (count < idx - 1 && temp != null) {
+            temp = temp.nextNode;
+            count++;
+        }
+
+        // Linking from 1 to 3, emit 2
+        Node tempAfter = temp.nextNode;
+        temp.nextNode = tempAfter.nextNode;
     }
 
     // =============================
@@ -265,27 +307,24 @@ public class SinglyTesting<E> {
      * @param x : Represent the value or the Object (forcing to override the comparable function for the case of Object)
      * @return the first position found in the linked list（0 base position)
      */
-    public int searchIterativeApproach(E x) {
+    public int searchReturnPos(E x) {
 
-	// Predefine exceptions to ignore only 1 element and 0 element
-	if (this.head == null) {
-	    return -1;
-	}
-	if (this.head.nextNode == null) {
-	    return 0;
-	}
+        // Predefine exceptions to ignore only 1 element and 0 element
+        if (isEmpty()) {
+            return -1;
+        }
 
-	Node pointer = this.head;
-	int pos = 0;
-	while (pointer != null) {
-	    if (pointer.getData().equals(x)) {
-		return pos;
-	    } else {
-		pos++;
-		pointer = pointer.nextNode;
-	    }
-	}
-	return pos;
+        Node pNode = this.head;
+        int pos = 0;
+        while (pNode != null) {
+            if (pNode.getData().equals(x)) {
+                return pos;
+            }
+
+            pos++;
+            pNode = pNode.nextNode;
+        }
+        return pos + 1;
     }
 
     /**
@@ -296,31 +335,78 @@ public class SinglyTesting<E> {
      * @param x: Represent the value or the Object (forcing to override the comparable function for the case of Object)
      * @return the first position found in the linked list（0 base position)
      */
-    public int searchRecursiveApproach(E x) {
-	return searchRecursiveApproach(this.head, x);
+    public int searchReturnPosRecursive(E x) {
+        return searchReturnPosRecursive(this.head, x);
     }
 
-    private int searchRecursiveApproach(Node node,
-	    E x) {
-	// Entry point to exit if reach the end of list
-	if (node == null) {
-	    return -1;
-	}
+    private int searchReturnPosRecursive(Node node,
+                                         E x) {
+        // Entry point to exit if reach the end of list
+        if (node == null) {
+            return -1;
+        }
 
-	// Entry point to exit if the node has been found 
-	if (node.getData().equals(x)) {
-	    return 0;
-	}
+        // Entry point to exit if the node has been found 
+        if (node.getData().equals(x)) {
+            return 0;
+        }
 
-	// Recursive finding on position
-	int pos = searchRecursiveApproach(node.nextNode, x);
+        // Recursive finding on position
+        int pos = searchReturnPosRecursive(node.nextNode, x);
 
-	// Are not found
-	if (pos == -1) {
-	    return -1; // If not found, return -1
-	} else {
-	    return pos + 1; // If found, increse the pos by one for each calling function
-	}
+        // If not found, return -1, backtracking
+        if (pos != -1) {
+
+            // If found, increase the pos by backtracking since pos starting at index 1
+            return pos + 1;
+        }
+
+        return pos;
+    }
+
+    /**
+     * Searching the node based on given data
+     *
+     * @param x
+     * @return
+     */
+    public Node searchReturnNode(E x) {
+        Node pNode = this.head;
+        while (pNode != null && !pNode.getData().equals(x)) {
+            pNode = pNode.nextNode;
+        }
+
+        return pNode;
+    }
+
+    /**
+     * Get Node at the current index
+     *
+     * @param idx
+     * @return
+     */
+    public Node get(int position) {
+
+        int idx = position - 1; // starting from index 0, not 1
+
+        if (isEmpty()) {
+            return null;
+        } else if (idx < 0 || idx >= this.size) {
+            return null;
+        } else if (idx == 0) {
+            return this.head;
+        } else if (idx == this.size - 1) {
+            return this.tail;
+        }
+
+        // counting from the head
+        Node pNode = this.head;
+        int count = 0;
+        while (count < idx && pNode != null) {
+            count++;
+            pNode = pNode.nextNode;
+        }
+        return pNode;
     }
 
     // =============================
@@ -331,15 +417,15 @@ public class SinglyTesting<E> {
      *
      * @return true if the head is empty
      */
-    public boolean isEmply() {
-	return head == null;
+    public boolean isEmpty() {
+        return head == null;
     }
 
     /**
      * Clear the list
      */
     public void clear() {
-	head = tail = null;
+        head = tail = null;
     }
 
     /**
@@ -348,6 +434,101 @@ public class SinglyTesting<E> {
      * @return
      */
     public int size() {
-	return this.count;
+        return this.size;
+    }
+
+    /**
+     * Sorting the linked list using bubble sort
+     *
+     * <br><br>If sorting on condition, change the swapping [CONDITION]
+     *
+     * @return
+     */
+    public void sortOnCondition(int lowerBound,
+                                int higherBound) {
+
+        // Return nothing if the bound is over the element of the list
+        if (lowerBound < 1 || higherBound > this.size) {
+            return;
+        }
+
+        // Initialize the essential variables
+        Node currNode = this.head;
+        Node compNode = null;
+
+        // working on the index = 0, not the position 1th
+        int countOuter = lowerBound - 1;
+        int countInner = 0;
+
+        while (countOuter < higherBound - 1) {
+
+            // Assign node to the next value
+            compNode = currNode.nextNode;
+            countInner = countOuter + 1;
+
+            // Swapping using bubble sort
+            while (countInner < higherBound) {
+                E data1 = (E) currNode.getData();
+                E data2 = (E) compNode.getData();
+
+                // Swapping based on [CONDITION]
+                if (data1.compareTo(data2) > 0) {
+                    E tmp = data1;
+                    currNode.setData(data2);
+                    compNode.setData(tmp);
+                }
+
+                // Forwarding compNode to the next element
+                compNode = compNode.nextNode;
+                countInner++;
+            }
+            currNode = currNode.nextNode;
+            countOuter++;
+        }
+    }
+
+    /**
+     * Testing Purpose
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+
+        // Initialize the Singly Linked Lis
+        SinglyTesting list = new SinglyTesting();
+
+        // Testing Add
+        list.addFirst(1);
+        list.addFirst(2);
+        list.addFirst(3);
+        list.addLast(4);
+        list.addLast(5);
+        list.addLast(6);
+        list.addLast(7);
+
+        list.add(9999, 5);
+
+        // Testing get
+        System.out.println("El at position 3: " + list.get(5).getData());
+
+        // Sorting
+        list.sortOnCondition(1, list.size);
+        list.traversal();
+
+        // Testing Search
+        System.out.println("Position of value 3210: " + list.searchReturnPos(3210));
+        System.out.println("Position of value 3210: " + list.searchReturnPosRecursive(3210));
+        System.out.println(" " + list.searchReturnNode(1).getData());
+
+        // Testing remove
+        list.removeAt(0);
+        list.traversal();
+
+        // Testing reverse nodes
+//        list.reverseNodes();
+//        list.traversal();
+        // Testing reverse data on nodes
+        list.reverseData();
+        list.traversal();
     }
 }
