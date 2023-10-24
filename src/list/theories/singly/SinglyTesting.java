@@ -409,6 +409,35 @@ public class SinglyTesting<E extends Comparable<E>> {
         return pNode;
     }
 
+    /**
+     * Find max data within the linked list
+     *
+     * @return
+     */
+    public Node findMaxData() {
+        if (isEmpty()) {
+            return null;
+        }
+
+        Node maxNode, pNode;
+        maxNode = pNode = head;
+
+        while (pNode != null) {
+            E pData = (E) pNode.getData();
+            E maxData = (E) maxNode.getData();
+
+            // If data > max, assign to max
+            if (pData.compareTo(maxData) > 0) {
+                maxNode.setData(pData);
+            }
+
+            pNode = pNode.nextNode;
+        }
+
+        // Return the maxNode
+        return maxNode;
+    }
+
     // =============================
     // == Utilities Method Groups
     // =============================
@@ -525,10 +554,14 @@ public class SinglyTesting<E extends Comparable<E>> {
         list.traversal();
 
         // Testing reverse nodes
-//        list.reverseNodes();
-//        list.traversal();
+        list.reverseNodes();
+        list.traversal();
+
         // Testing reverse data on nodes
         list.reverseData();
         list.traversal();
+
+        // Testing find max data
+        System.out.println("Max data: " + list.findMaxData().getData());
     }
 }
