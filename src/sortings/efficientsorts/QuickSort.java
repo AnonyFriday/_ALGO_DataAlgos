@@ -16,6 +16,8 @@ public class QuickSort<T extends Comparable<T>> {
     /**
      * Quick sort
      *
+     * <br><br>
+     *
      * @param arr
      * @param low
      * @param high
@@ -38,6 +40,29 @@ public class QuickSort<T extends Comparable<T>> {
     }
 
     /**
+     * Quicksort using random Pivot technique to reduce the case of sorted array
+     * @param arr
+     * @param left
+     * @param right 
+     */
+    public void quickSortRandomPivot(T[] arr, int left, int right) {
+	if (left < right) {
+	    generateRandomPivotIndex(arr, left,	right);
+	    int pivotIdx = partition(arr, left, right);
+	    quickSortRandomPivot(arr, left, pivotIdx - 1);
+	    quickSortRandomPivot(arr, pivotIdx + 1, right);
+	}
+    }
+    
+    /**
+     * Overloadding the function of quickSortRandomPivot
+     * @param arr 
+     */
+    public void quickSortRandomPivot(T[] arr) {
+	quickSortRandomPivot(arr, 0, arr.length - 1);
+    }
+    
+    /**
      * A function to calculate the pivot after sorting the subarray
      * <br><br> Choosing the pivot as the first index
      *
@@ -52,6 +77,7 @@ public class QuickSort<T extends Comparable<T>> {
 
 	// Choosing the pivot as the first index
 	// Assuming that the pivot index starting at left
+	// Choosing the pivot on the right 
 	int pivotIdx = left;
 	T pivotValue = arr[right];
 
@@ -82,21 +108,19 @@ public class QuickSort<T extends Comparable<T>> {
 	System.out.println("");
     }
 
+    public void generateRandomPivotIndex(T[] arr, int left, int right) {
+	int randomIdx = (int) (Math.random() * ((right - left + 1)) + left);
+	HelperFunctions.swap(arr, randomIdx, right);
+    }
+
     // Testing
     public static void main(String[] args) {
 	QuickSort<Integer> test = new QuickSort<>();
 
 	Integer[] arr = new Integer[]{4, 8, 2, 1, 3, 5, 0, 10};
-	test.quickSort(arr);
-
+//	test.quickSort(arr);
+	
+	test.quickSortRandomPivot(arr);
 	test.displayArr(arr);
     }
 }
-
-/**
- * P = 9
- * 3 5 8 2 5 10 1
- * 3 > (1) -> 1 5 8 2 5 10 3
- * 5 > (1) -> 1
- *
- */
