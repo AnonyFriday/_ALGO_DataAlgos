@@ -66,9 +66,10 @@ public class SinglyTesting<E extends Comparable<E>> {
 
     /**
      * Add the Node to the end of the list
-     *
-     * The tail reference is pointing to the last object Node Set the nextNode of the last object Node to the newly
-     * added Node Set the tail reference pointing to the newly added Node
+     * <p>
+     * The tail reference is pointing to the last object Node Set the nextNode
+     * of the last object Node to the newly added Node Set the tail reference
+     * pointing to the newly added Node
      *
      * @param node: newly created node
      */
@@ -95,8 +96,7 @@ public class SinglyTesting<E extends Comparable<E>> {
      * @param node
      * @param pos
      */
-    public void add(E x,
-                    int pos) {
+    public void add(E x, int pos) {
         int idx = pos - 1;  // start from index 0, not 1
 
         // when no elements, adding to the list
@@ -209,8 +209,8 @@ public class SinglyTesting<E extends Comparable<E>> {
     /**
      * Remove first element of the linked list
      * <br>
-     * Create a temp node pointing to the next Node, while setting the current to null and setting back the head to temp
-     * afterward
+     * Create a temp node pointing to the next Node, while setting the current
+     * to null and setting back the head to temp afterward
      */
     public void removeFirst() {
         if (this.isEmpty()) {
@@ -237,10 +237,9 @@ public class SinglyTesting<E extends Comparable<E>> {
 
     /**
      * Remove last element of the linked list
-     *
-     * Create a temp node pointing to the backward Node, while setting the current tail to null and setting it to temp
-     * afterward
-     *
+     * <p>
+     * Create a temp node pointing to the backward Node, while setting the
+     * current tail to null and setting it to temp afterward
      */
     public void removeLast() {
         if (this.isEmpty()) {
@@ -271,9 +270,7 @@ public class SinglyTesting<E extends Comparable<E>> {
         // Does not remove when the list is empty
         int idx = pos - 1;
 
-        if (this.isEmpty()) {
-            return;
-        } else if (idx < 0 || idx >= this.size) {
+        if (this.isEmpty() || idx < 0 || idx >= this.size) {
             return;
         } else if (idx == 0) {
             this.removeFirst();
@@ -304,7 +301,8 @@ public class SinglyTesting<E extends Comparable<E>> {
     /**
      * Search the Element using the Iterative Approach
      *
-     * @param x : Represent the value or the Object (forcing to override the comparable function for the case of Object)
+     * @param x : Represent the value or the Object (forcing to override the
+     * comparable function for the case of Object)
      * @return the first position found in the linked list（0 base position)
      */
     public int searchReturnPos(E x) {
@@ -330,17 +328,18 @@ public class SinglyTesting<E extends Comparable<E>> {
     /**
      * Search the Element using Recursive Approach
      *
-     * <br>**Using Function Overloading to achieve the default function's parameters in Java**
+     * <br>**Using Function Overloading to achieve the default function's
+     * parameters in Java**
      *
-     * @param x: Represent the value or the Object (forcing to override the comparable function for the case of Object)
+     * @param x: Represent the value or the Object (forcing to override the
+     * comparable function for the case of Object)
      * @return the first position found in the linked list（0 base position)
      */
     public int searchReturnPosRecursive(E x) {
         return searchReturnPosRecursive(this.head, x);
     }
 
-    private int searchReturnPosRecursive(Node node,
-                                         E x) {
+    private int searchReturnPosRecursive(Node node, E x) {
         // Entry point to exit if reach the end of list
         if (node == null) {
             return -1;
@@ -467,14 +466,13 @@ public class SinglyTesting<E extends Comparable<E>> {
     }
 
     /**
-     * Sorting the linked list using bubble sort
+     * Sorting the linked list using selection sort with condition
      *
      * <br><br>If sorting on condition, change the swapping [CONDITION]
      *
      * @return
      */
-    public void sortOnCondition(int lowerBound,
-                                int higherBound) {
+    public void sortOnCondition(int lowerBound, int higherBound) {
 
         // Return nothing if the bound is over the element of the list
         if (lowerBound < 1 || higherBound > this.size) {
@@ -489,14 +487,14 @@ public class SinglyTesting<E extends Comparable<E>> {
         int countOuter = lowerBound - 1;
         int countInner = 0;
 
-        while (countOuter < higherBound - 1) {
+        while (countOuter <= higherBound - 1) {
 
             // Assign node to the next value
             compNode = currNode.nextNode;
             countInner = countOuter + 1;
 
             // Swapping using bubble sort
-            while (countInner < higherBound) {
+            while (countInner <= higherBound) {
                 E data1 = (E) currNode.getData();
                 E data2 = (E) compNode.getData();
 
@@ -517,6 +515,33 @@ public class SinglyTesting<E extends Comparable<E>> {
     }
 
     /**
+     * Sorting the list on condition without bound (Selection Sort)
+     */
+    void sortOnCondition() {
+        if (isEmpty() || head.nextNode == null) {
+            return;
+        }
+
+        Node outerNode = this.head;
+        Node innerNode = null;
+
+        while (outerNode.nextNode != null) {
+
+            innerNode = outerNode.nextNode;
+            while (innerNode != null) {
+
+                if (((E) outerNode.getData()).compareTo((E) innerNode.getData()) > 0) {
+                    E tmpObj = (E) outerNode.getData();
+                    outerNode.setData(innerNode.getData());
+                    innerNode.setData(tmpObj);
+                }
+                innerNode = innerNode.nextNode;
+            }
+            outerNode = outerNode.nextNode;
+        }
+    }
+
+    /**
      * Testing Purpose
      *
      * @param args
@@ -529,39 +554,46 @@ public class SinglyTesting<E extends Comparable<E>> {
         // Testing Add
         list.addFirst(1);
         list.addFirst(2);
+        list.addLast(7);
         list.addFirst(3);
         list.addLast(4);
+        list.addLast(7);
         list.addLast(5);
         list.addLast(6);
+        list.addLast(7);
         list.addLast(7);
 
         list.add(9999, 5);
 
-        // Testing get
-        System.out.println("El at position 3: " + list.get(5).getData());
-
-        // Sorting
-        list.sortOnCondition(1, list.size);
+//        // Testing get
+//        System.out.println("El at position 3: " + list.get(5).getData());
+//
+//        // Sorting
+//        list.sortOnCondition(1, list.size);
+//        list.traversal();
+//
+//        // Testing Search
+//        System.out.println("Position of value 3210: " + list.searchReturnPos(3210));
+//        System.out.println("Position of value 3210: " + list.searchReturnPosRecursive(3210));
+//        System.out.println(" " + list.searchReturnNode(1).getData());
+//
+//        // Testing remove
+//        list.removeAt(0);
+//        list.traversal();
+//
+//        // Testing reverse nodes
+//        list.reverseNodes();
+//        list.traversal();
+//
+//        // Testing reverse data on nodes
+//        list.reverseData();
+//        list.traversal();
+//
+//        // Testing find max data
+//        System.out.println("Max data: " + list.findMaxData().getData());
+        // Testing sorting
+        list.sortOnCondition();
+//        list.sortOnCondition(1, 10);
         list.traversal();
-
-        // Testing Search
-        System.out.println("Position of value 3210: " + list.searchReturnPos(3210));
-        System.out.println("Position of value 3210: " + list.searchReturnPosRecursive(3210));
-        System.out.println(" " + list.searchReturnNode(1).getData());
-
-        // Testing remove
-        list.removeAt(0);
-        list.traversal();
-
-        // Testing reverse nodes
-        list.reverseNodes();
-        list.traversal();
-
-        // Testing reverse data on nodes
-        list.reverseData();
-        list.traversal();
-
-        // Testing find max data
-        System.out.println("Max data: " + list.findMaxData().getData());
     }
 }
