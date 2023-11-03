@@ -51,7 +51,7 @@ public class BSTree<E extends Comparable<E>> {
         // Finding the position to add the data
         // if key = 0 means addinng the existed data, then return without addition
         int key = data.compareTo(root.data);
-
+        
         if (key < 0) {
             root.left = addNode(root.left, data);
         } else if (key > 0) {
@@ -106,7 +106,7 @@ public class BSTree<E extends Comparable<E>> {
 
                 // Comparing 2 object based on the compareTo function
                 int key = currNode.data.compareTo(newData);
-
+                
                 if (key > 0) {
                     currNode = currNode.left;
                 } else if (key < 0) {
@@ -150,7 +150,7 @@ public class BSTree<E extends Comparable<E>> {
      */
     public BSTNode search(BSTNode<E> node,
             E data) {
-
+        
         if (node == null) {
             return null;
         }
@@ -166,10 +166,17 @@ public class BSTree<E extends Comparable<E>> {
         } else if (data.compareTo(node.data) < 0) {
             return search(node.left, data);
         }
-
+        
         return null;
     }
 
+    /**
+     * Searching
+     *
+     * @param data
+     *
+     * @return
+     */
     public BSTNode search(E data) {
         return search(this.root, data);
     }
@@ -189,7 +196,7 @@ public class BSTree<E extends Comparable<E>> {
         preOrderRecursion(resultList, this.root);
         return resultList;
     }
-
+    
     private void preOrderRecursion(ArrayList<E> resultList,
             BSTNode root) {
         if (root == null) {
@@ -205,28 +212,32 @@ public class BSTree<E extends Comparable<E>> {
     /**
      * Depth First Search Using Preorder Iteration
      *
+     * @param node
      * @param data: passed data to form a root
      *
      * @return a list of traversal lists
      */
-    public List<E> preOrderIteration() {
-
+    public List<E> preOrderIteration(BSTNode node) {
+        
         ArrayList<E> resultList = new ArrayList();
-        Stack<BSTNode> stk = new Stack();
-
-        stk.push(this.root);
+        Stack<BSTNode> stack = new Stack();
+        
+        BSTNode cNode = node;
+        stack.add(cNode);
 
         // when there are still 
-        while (!stk.isEmpty() && this.root != null) {
-            BSTNode currNode = stk.pop();
+        while (!stack.isEmpty()) {
+            BSTNode currNode = stack.pop();
 
+            // Adding to the list result
             resultList.add((E) currNode.data);
-
-            if (currNode.left != null) {
-                stk.push((BSTNode) currNode.left);
-            }
+            
             if (currNode.right != null) {
-                stk.push((BSTNode) currNode.right);
+                stack.push((BSTNode) currNode.right);
+            }
+            
+            if (currNode.left != null) {
+                stack.push((BSTNode) currNode.left);
             }
         }
 
@@ -239,6 +250,7 @@ public class BSTree<E extends Comparable<E>> {
      *
      * @param pNode
      * @param position
+     *
      * @return
      */
     public BSTNode preOrderFindNodeNth(BSTNode pNode, int position) {
@@ -252,7 +264,7 @@ public class BSTree<E extends Comparable<E>> {
         int count = 0;
         int idx = position - 1; // dealing with index 0
         Stack<BSTNode> stack = new Stack<>();
-
+        
         stack.add(pNode);
 
         // looping until count = 4 then stop
@@ -289,6 +301,12 @@ public class BSTree<E extends Comparable<E>> {
         return resultList;
     }
 
+    /**
+     * Post order using recursiong approach
+     *
+     * @param resultList
+     * @param root
+     */
     private void postOrderRecursion(ArrayList<E> resultList,
             BSTNode root) {
         if (root == null) {
@@ -299,6 +317,107 @@ public class BSTree<E extends Comparable<E>> {
         postOrderRecursion(resultList, (BSTNode) root.left);
         postOrderRecursion(resultList, (BSTNode) root.right);
         resultList.add((E) root.data);
+    }
+
+    /**
+     * Finding node nth using post order traversal recursion (inefficient due to the static variable)
+     */
+    static int count = 0;
+    
+    public BSTNode postOrderFindNodeNth(BSTNode node, int position) {
+        
+        if (node == null) {
+            return null;
+        }
+        
+        BSTNode left = postOrderFindNodeNth(node.left, position);
+        BSTNode right = postOrderFindNodeNth(node.right, position);
+        
+        count++;
+        if (count == position) {
+            return node;
+        }
+        
+        return left != null ? left : right;
+    }
+    
+    public List<E> postOrderIteration(BSTNode node) {
+        Stack<BSTNode> stack = new Stack<>();
+        ArrayList<E> result = new ArrayList<>();
+        
+        BSTNode cNode = node;
+        BSTNode prevNode = null;
+        
+        while (!stack.isEmpty() || cNode != null) {
+            while (cNode != null) {
+                stack.add(cNode);
+                cNode = cNode.left;
+            }
+
+            /**
+             * 12
+             * 4 20
+             * 1 3
+             */
+            // Peek the top of the stack
+            BSTNode peekNode = stack.peek();
+
+            // Check if the node has right or not
+            // Tracking the previous visited node 
+            if (peekNode.right != null && prevNode != peekNode.right) {
+                cNode = peekNode.right; // If has right, then set cNode to right and keep expanding to left
+            } else {
+                result.add((E) peekNode.data);
+                prevNode = stack.pop();
+            }
+        }
+        
+        return result;
+    }
+
+    /**
+     * Finding node nth using post order iterative
+     *
+     * @param node
+     * @param position
+     *
+     * @return
+     */
+    public BSTNode postOrderIterativeFindNodeNth(BSTNode node, int position) {
+        if (position < 1 || this.isEmpty()) {
+            return null;
+        }
+
+        // Handling width index 0 only
+        int idx = position - 1;
+        int count = 0;
+        
+        Stack<BSTNode> stack = new Stack<>();
+        BSTNode cNode = node;
+        BSTNode prevNode = null;
+        
+        while (!stack.isEmpty() || cNode != null) {
+            while (cNode != null) {
+                stack.add(cNode);
+                cNode = cNode.left;
+            }
+
+            // Checking the top of the stack
+            BSTNode peekNode = stack.peek();
+            
+            if (peekNode.right != null && peekNode.right != prevNode) {
+                cNode = peekNode.right;
+            } else {
+                prevNode = stack.pop();
+                if (count == idx) {
+                    return prevNode;
+                }
+                count++;
+            }
+        }
+
+        // If not found then return null
+        return null;
     }
 
     // ======================================
@@ -314,7 +433,7 @@ public class BSTree<E extends Comparable<E>> {
         inOrderRecursion(resultList, this.root);
         return resultList;
     }
-
+    
     private void inOrderRecursion(ArrayList<E> resultList,
             BSTNode root) {
         if (root == null) {
@@ -330,16 +449,61 @@ public class BSTree<E extends Comparable<E>> {
     /**
      * Depth First Search using inorder iteration
      *
+     * @param node
+     *
      * @return a traversal list
      */
-    public List<E> inOrderIteration() {
-
+    public List<E> inOrderIteration(BSTNode node) {
+        
         ArrayList<E> resultList = new ArrayList();
-        Stack<BSTNode> stk = new Stack();
+        Stack<BSTNode> stack = new Stack();
+        
+        BSTNode currNode = node;
+        
+        while (!stack.isEmpty() || currNode != null) {
 
-        BSTNode currNode = this.root;
+            //     12 
+            //   1    30
+            // 0   2
+            // output: 0 1 2 12 30
+            // push the 12, then 1 then 0
+            // when reaching to the deepest left = null, then pop it and print to the screen
+            // move to the right and then move to left, if nothing then return 
+            while (currNode != null) {
+                stack.push(currNode);
+                currNode = currNode.left;
+            }
+            
+            currNode = stack.pop();
+            resultList.add((E) currNode.data);
 
-        while (!stk.isEmpty() || currNode != null) {
+            // Moving to the right
+            currNode = currNode.right;
+        }
+        
+        return resultList;
+    }
+
+    /**
+     * Find node at nth when conducting inorder traversal
+     *
+     * @param node
+     * @param position
+     *
+     * @return
+     */
+    public BSTNode inOrderFindNodeNth(BSTNode node, int position) {
+        
+        Stack<BSTNode> stack = new Stack();
+
+        // Working on index 0 only
+        int idx = position - 1;
+        int count = 0;
+        
+        BSTNode pNode = node;
+        stack.push(node);
+        
+        while (!stack.isEmpty()) {
 
             //     12 
             //   1    30
@@ -348,23 +512,28 @@ public class BSTree<E extends Comparable<E>> {
             // push the 12, then 1 then 0
             // when reaching left = null, then pop it and print to the screen
             // move to the right and then move to left, if nothing then return 
-            if (currNode != null) {
-                stk.push(currNode);
-                currNode = currNode.left;
-                continue;
+            while (pNode != null) {
+                stack.push(pNode);
+                pNode = pNode.left;
             }
 
-            currNode = stk.pop();
-            resultList.add((E) currNode.data);
+            // Left -> Mid -> Right
+            // Return the node nth
+            pNode = stack.pop();
+            if (count == idx) {
+                return pNode;
+            }
 
             // Moving to the right
-            currNode = currNode.right;
+            pNode = pNode.right;
+            count++;
         }
 
-        return resultList;
+        // If notfound then return null
+        return null;
     }
 
-    // ======================================
+// ======================================
     // = Breadth Methods
     // ======================================
     /**
@@ -373,17 +542,17 @@ public class BSTree<E extends Comparable<E>> {
      * @return
      */
     public List<E> breadthFirstTraversal() {
-
+        
         ArrayList<E> resultList = new ArrayList<>();
         Queue<BSTNode> tmpQueue = new LinkedList<>();
-
+        
         if (isEmpty()) {
             return resultList;
         }
-
+        
         BSTNode currNode = this.root;
         tmpQueue.add(currNode);
-
+        
         while (!tmpQueue.isEmpty()) {
             currNode = tmpQueue.remove();
             resultList.add((E) currNode.data);
@@ -392,12 +561,12 @@ public class BSTree<E extends Comparable<E>> {
             if (currNode.left != null) {
                 tmpQueue.add((BSTNode) currNode.left);
             }
-
+            
             if (currNode.right != null) {
                 tmpQueue.add((BSTNode) currNode.right);
             }
         }
-
+        
         return resultList;
     }
 
@@ -415,18 +584,7 @@ public class BSTree<E extends Comparable<E>> {
         BSTNode parNode = findParentNode(target);
         BSTNode cNode = target;
 
-//        // If the target is the root, delete it 
-//        if (cNode == root && parNode == null) {
-//            if (cNode.left != null) {
-//                root = cNode.left;              // Case root has left only
-//            } else if (cNode.right != null) {   // Case root has right only
-//                root = cNode.right;
-//            } else {                            // Case only no terminals
-//                root = cNode = null;
-//            }
-//
-//        } // If the target if the random note, not the target node
-//        else {
+        // Check terminal nodes of the target node
         int children = countTerminalNode(cNode);
         switch (children) {
             case 0:
@@ -439,13 +597,14 @@ public class BSTree<E extends Comparable<E>> {
                 deleteNodeTwoTerminals(cNode);
                 break;
         }
-
+        
     }
 
     /**
      * Find the parent node of the passed node
      *
      * @param target
+     *
      * @return
      */
     public BSTNode findParentNode(BSTNode target) {
@@ -476,6 +635,7 @@ public class BSTree<E extends Comparable<E>> {
      * Count number of terminal node from the given node
      *
      * @param target
+     *
      * @return
      */
     public int countTerminalNode(BSTNode target) {
@@ -509,11 +669,11 @@ public class BSTree<E extends Comparable<E>> {
      * @param father
      */
     private void deleteNodeOneTerminal(BSTNode target, BSTNode father) {
-
+        
         BSTNode grandChild = target.left != null
                 ? target.left
                 : target.right;
-
+        
         if (father.left == target) {
             father.left = grandChild;
         } else {
@@ -527,8 +687,8 @@ public class BSTree<E extends Comparable<E>> {
      * @param target
      */
     private void deleteNodeTwoTerminals(BSTNode target) {
-        deleteByInfixPredecessor(target);
-//        deleteByInfixSuccessor(target);
+        deleteByInorderPredecessor(target);
+//        deleteByInorderSuccessor(target);
     }
 
     /**
@@ -536,7 +696,7 @@ public class BSTree<E extends Comparable<E>> {
      *
      * @param target
      */
-    private void deleteByInfixPredecessor(BSTNode target) {
+    private void deleteByInorderPredecessor(BSTNode target) {
         BSTNode parNode = target;
         BSTNode currNode = target.left;
 
@@ -566,7 +726,7 @@ public class BSTree<E extends Comparable<E>> {
      *
      * @param target
      */
-    private void deleteByInfixSuccessor(BSTNode target) {
+    private void deleteByInorderSuccessor(BSTNode target) {
         BSTNode parNode = target;
         BSTNode currNode = target.right;
 
@@ -633,7 +793,7 @@ public class BSTree<E extends Comparable<E>> {
      * @param args
      */
     public static void main(String[] args) {
-
+        
         BSTree<Integer> tree = new BSTree<>();
         Integer[] arr = new Integer[]{5, 1, 9, 8, 7, 0, 2, 3, 4, 6};
 
@@ -641,7 +801,7 @@ public class BSTree<E extends Comparable<E>> {
         for (int i = 0; i < arr.length; i++) {
             tree.addNode(arr[i]);
         }
-
+        
         System.out.println(tree.breadthFirstTraversal());
 
         // Testing conducting a height-balanced tree
@@ -650,15 +810,25 @@ public class BSTree<E extends Comparable<E>> {
         for (int i = 0; i < arr.length; i++) {
             tree.addNode(list.get(i));
         }
-        System.out.println(tree.preOrderIteration());
-
+        
         printAlignedHorizontally(tree.root, "\t");
 
         // Testing Searching 
         System.out.println("Node 700: " + tree.search(700));
         System.out.println("Node 0: " + tree.search(0).data);
+        
+        System.out.println("Preorder: " + tree.preOrderIteration(tree.root));
+        System.out.println("Inorder: " + tree.inOrderIteration(tree.root));
+        System.out.println("Postorder: " + tree.postOrderIteration(tree.root));
 
-        // Preorder Finding 4th
-        System.out.println(tree.preOrderFindNodeNth(tree.root, 4));
+        // Finding 4th in preoreder, inorder, postorder
+        System.out.println("4th preorder: " + tree.preOrderFindNodeNth(tree.root, 4).data);
+        System.out.println("6th inorder: " + tree.inOrderFindNodeNth(tree.root, 6).data);
+        System.out.println("8th postorder: " + tree.postOrderFindNodeNth(tree.root, 8).data);
+        System.out.println("8th postorder iter: " + tree.postOrderIterativeFindNodeNth(tree.root, 8).data);
+
+        // Checking delete node
+        tree.deleteNodeByCopying(tree.search(6));
+        printAlignedHorizontally(tree.root, "\t");
     }
 }
