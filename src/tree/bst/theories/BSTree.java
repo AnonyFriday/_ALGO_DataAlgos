@@ -4,6 +4,7 @@
  */
 package tree.bst.theories;
 
+import static java.lang.Integer.max;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -320,7 +321,8 @@ public class BSTree<E extends Comparable<E>> {
     }
 
     /**
-     * Finding node nth using post order traversal recursion (inefficient due to the static variable)
+     * Finding node nth using post order traversal recursion (inefficient due to
+     * the static variable)
      */
     static int count = 0;
 
@@ -355,9 +357,7 @@ public class BSTree<E extends Comparable<E>> {
             }
 
             /**
-             * 12
-             * 4 20
-             * 1 3
+             * 12 4 20 1 3
              */
             // Peek the top of the stack
             BSTNode peekNode = stack.peek();
@@ -760,40 +760,93 @@ public class BSTree<E extends Comparable<E>> {
         if (node.left == null) {
             return;
         }
-        
+
         /**
-         * FA                           FA
-         *      90                          34
-         *  34        95           ->              90
-         *     35   91   100                    35     95
-         *                                           91   100
-         * Create a virtual moved subtree, attach all child of leftnode to its
-         * and attach the virtual subtree to the right after
+         * FA FA 90 34 34 95 -> 90 35 91 100 35 95 91 100 Create a virtual moved
+         * subtree, attach all child of leftnode to its and attach the virtual
+         * subtree to the right after
          */
         BSTNode movedSubTree = new BSTNode(node.data);
         movedSubTree.left = node.left.right;
         movedSubTree.right = node.right;
-        
+
         // Assign back the value to the rotated node
         node.data = node.left.data;
         node.left = node.left.left;
         node.right = movedSubTree;
-        
+
     }
 
     public void rotateLeft(BSTNode node) {
         if (node.right == null) {
             return;
         }
-        
+
         BSTNode movedSubTree = new BSTNode(node.data);
         movedSubTree.right = node.right.left;
         movedSubTree.left = node.left;
-        
+
         // Assign back the value to the rotated node
         node.data = node.right.data;
         node.left = movedSubTree;
         node.right = node.right.right;
+    }
+
+    // ======================================
+    // = Height Methods
+    // ======================================
+    /**
+     * Calculate the max height of the tree using recursion
+     *
+     * @param node
+     *
+     * @return
+     */
+    public int maxHeightRecursion(BSTNode node) {
+        if (node == null) {
+            return 0;
+        } else {
+            return max(maxHeightRecursion(node.left), maxHeightRecursion(node.right)) + 1;
+        }
+    }
+
+    /**
+     * Calculate the max height of the tree using BFS approach
+     *
+     * @param node
+     *
+     * @return
+     */
+    public int maxHeightIterative(BSTNode node) {
+        if (node == null) {
+            return 0;
+        }
+        if (node.left == null && node.right == null) {
+            return 1;
+        }
+
+        // Apply BFS to calculate the height
+        Queue<BSTNode> queue = new LinkedList<>();
+        int height = 0;
+        queue.add(node);
+
+        while (!queue.isEmpty()) {
+            height++;   // increase height at each level
+
+            // explore all level, then come to the next
+            for (int i = 0; i < queue.size(); i++) {
+                BSTNode tmp = queue.remove();
+                if (tmp.left != null) {
+                    queue.add(tmp.left);
+                }
+
+                if (tmp.right != null) {
+                    queue.add(tmp.right);
+                }
+            }
+        }
+
+        return height;
     }
 
     // ======================================
@@ -851,7 +904,7 @@ public class BSTree<E extends Comparable<E>> {
 
         // Testing conducting a height-balanced tree
         Arrays.sort(arr);
-        List<Integer> list = SimpleBalanceTheTreeFromArray.balance(arr);
+        List<Integer> list = SimpleBalanceTheTreeFromArray.balanceBST(arr);
         for (int i = 0; i < arr.length; i++) {
             tree.addNode(list.get(i));
         }
@@ -875,12 +928,16 @@ public class BSTree<E extends Comparable<E>> {
         // Checking delete node
         tree.deleteNodeByCopying(tree.search(6));
         printAlignedHorizontally(tree.root, "\t");
-        
+
         // Checking the rotate left and right
         BSTNode node = tree.search(5);
         tree.rorateRight(node);
         tree.rotateLeft(node);
         printAlignedHorizontally(tree.root, "\t");
+
+        // Check the height of the tree
+        System.out.println("Max Height Iterative " + tree.maxHeightIterative(tree.root));
+        System.out.println("Max Height Recursion " + tree.maxHeightRecursion(tree.root));
 
     }
 }
