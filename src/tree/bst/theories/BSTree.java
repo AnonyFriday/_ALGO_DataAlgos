@@ -849,6 +849,30 @@ public class BSTree<E extends Comparable<E>> {
         return height;
     }
 
+    /**
+     * Check if the tree is balanced or not based on its height
+     *
+     * @param root
+     *
+     * @return
+     */
+    public boolean isBalanced(BSTNode root) {
+        if (root == null) {
+            return true;
+        }
+
+        // Extract the left and right of the current node
+        int leftHeight = maxHeightRecursion(root.left);
+        int rightHeight = maxHeightRecursion(root.right);
+
+        if (Math.abs(leftHeight - rightHeight) > 1) {
+            return false;
+        }
+
+        // recursively go to each node on left and right and check the current height of it 
+        return isBalanced(root.left) && isBalanced(root.right);
+    }
+
     // ======================================
     // = Utility Methods
     // ======================================
@@ -938,6 +962,9 @@ public class BSTree<E extends Comparable<E>> {
         // Check the height of the tree
         System.out.println("Max Height Iterative " + tree.maxHeightIterative(tree.root));
         System.out.println("Max Height Recursion " + tree.maxHeightRecursion(tree.root));
+
+        // Check if the tree is the balance tree
+        System.out.println("Is Balanced Tree " + tree.isBalanced(tree.root));
 
     }
 }
