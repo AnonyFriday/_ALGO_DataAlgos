@@ -51,7 +51,7 @@ public class BSTree<E extends Comparable<E>> {
         // Finding the position to add the data
         // if key = 0 means addinng the existed data, then return without addition
         int key = data.compareTo(root.data);
-        
+
         if (key < 0) {
             root.left = addNode(root.left, data);
         } else if (key > 0) {
@@ -106,7 +106,7 @@ public class BSTree<E extends Comparable<E>> {
 
                 // Comparing 2 object based on the compareTo function
                 int key = currNode.data.compareTo(newData);
-                
+
                 if (key > 0) {
                     currNode = currNode.left;
                 } else if (key < 0) {
@@ -150,7 +150,7 @@ public class BSTree<E extends Comparable<E>> {
      */
     public BSTNode search(BSTNode<E> node,
             E data) {
-        
+
         if (node == null) {
             return null;
         }
@@ -166,7 +166,7 @@ public class BSTree<E extends Comparable<E>> {
         } else if (data.compareTo(node.data) < 0) {
             return search(node.left, data);
         }
-        
+
         return null;
     }
 
@@ -196,7 +196,7 @@ public class BSTree<E extends Comparable<E>> {
         preOrderRecursion(resultList, this.root);
         return resultList;
     }
-    
+
     private void preOrderRecursion(ArrayList<E> resultList,
             BSTNode root) {
         if (root == null) {
@@ -218,10 +218,10 @@ public class BSTree<E extends Comparable<E>> {
      * @return a list of traversal lists
      */
     public List<E> preOrderIteration(BSTNode node) {
-        
+
         ArrayList<E> resultList = new ArrayList();
         Stack<BSTNode> stack = new Stack();
-        
+
         BSTNode cNode = node;
         stack.add(cNode);
 
@@ -231,11 +231,11 @@ public class BSTree<E extends Comparable<E>> {
 
             // Adding to the list result
             resultList.add((E) currNode.data);
-            
+
             if (currNode.right != null) {
                 stack.push((BSTNode) currNode.right);
             }
-            
+
             if (currNode.left != null) {
                 stack.push((BSTNode) currNode.left);
             }
@@ -264,7 +264,7 @@ public class BSTree<E extends Comparable<E>> {
         int count = 0;
         int idx = position - 1; // dealing with index 0
         Stack<BSTNode> stack = new Stack<>();
-        
+
         stack.add(pNode);
 
         // looping until count = 4 then stop
@@ -323,31 +323,31 @@ public class BSTree<E extends Comparable<E>> {
      * Finding node nth using post order traversal recursion (inefficient due to the static variable)
      */
     static int count = 0;
-    
+
     public BSTNode postOrderFindNodeNth(BSTNode node, int position) {
-        
+
         if (node == null) {
             return null;
         }
-        
+
         BSTNode left = postOrderFindNodeNth(node.left, position);
         BSTNode right = postOrderFindNodeNth(node.right, position);
-        
+
         count++;
         if (count == position) {
             return node;
         }
-        
+
         return left != null ? left : right;
     }
-    
+
     public List<E> postOrderIteration(BSTNode node) {
         Stack<BSTNode> stack = new Stack<>();
         ArrayList<E> result = new ArrayList<>();
-        
+
         BSTNode cNode = node;
         BSTNode prevNode = null;
-        
+
         while (!stack.isEmpty() || cNode != null) {
             while (cNode != null) {
                 stack.add(cNode);
@@ -371,7 +371,7 @@ public class BSTree<E extends Comparable<E>> {
                 prevNode = stack.pop();
             }
         }
-        
+
         return result;
     }
 
@@ -391,11 +391,11 @@ public class BSTree<E extends Comparable<E>> {
         // Handling width index 0 only
         int idx = position - 1;
         int count = 0;
-        
+
         Stack<BSTNode> stack = new Stack<>();
         BSTNode cNode = node;
         BSTNode prevNode = null;
-        
+
         while (!stack.isEmpty() || cNode != null) {
             while (cNode != null) {
                 stack.add(cNode);
@@ -404,7 +404,7 @@ public class BSTree<E extends Comparable<E>> {
 
             // Checking the top of the stack
             BSTNode peekNode = stack.peek();
-            
+
             if (peekNode.right != null && peekNode.right != prevNode) {
                 cNode = peekNode.right;
             } else {
@@ -433,7 +433,7 @@ public class BSTree<E extends Comparable<E>> {
         inOrderRecursion(resultList, this.root);
         return resultList;
     }
-    
+
     private void inOrderRecursion(ArrayList<E> resultList,
             BSTNode root) {
         if (root == null) {
@@ -454,12 +454,12 @@ public class BSTree<E extends Comparable<E>> {
      * @return a traversal list
      */
     public List<E> inOrderIteration(BSTNode node) {
-        
+
         ArrayList<E> resultList = new ArrayList();
         Stack<BSTNode> stack = new Stack();
-        
+
         BSTNode currNode = node;
-        
+
         while (!stack.isEmpty() || currNode != null) {
 
             //     12 
@@ -473,14 +473,14 @@ public class BSTree<E extends Comparable<E>> {
                 stack.push(currNode);
                 currNode = currNode.left;
             }
-            
+
             currNode = stack.pop();
             resultList.add((E) currNode.data);
 
             // Moving to the right
             currNode = currNode.right;
         }
-        
+
         return resultList;
     }
 
@@ -493,16 +493,16 @@ public class BSTree<E extends Comparable<E>> {
      * @return
      */
     public BSTNode inOrderFindNodeNth(BSTNode node, int position) {
-        
+
         Stack<BSTNode> stack = new Stack();
 
         // Working on index 0 only
         int idx = position - 1;
         int count = 0;
-        
+
         BSTNode pNode = node;
         stack.push(node);
-        
+
         while (!stack.isEmpty()) {
 
             //     12 
@@ -542,17 +542,17 @@ public class BSTree<E extends Comparable<E>> {
      * @return
      */
     public List<E> breadthFirstTraversal() {
-        
+
         ArrayList<E> resultList = new ArrayList<>();
         Queue<BSTNode> tmpQueue = new LinkedList<>();
-        
+
         if (isEmpty()) {
             return resultList;
         }
-        
+
         BSTNode currNode = this.root;
         tmpQueue.add(currNode);
-        
+
         while (!tmpQueue.isEmpty()) {
             currNode = tmpQueue.remove();
             resultList.add((E) currNode.data);
@@ -561,12 +561,12 @@ public class BSTree<E extends Comparable<E>> {
             if (currNode.left != null) {
                 tmpQueue.add((BSTNode) currNode.left);
             }
-            
+
             if (currNode.right != null) {
                 tmpQueue.add((BSTNode) currNode.right);
             }
         }
-        
+
         return resultList;
     }
 
@@ -597,7 +597,7 @@ public class BSTree<E extends Comparable<E>> {
                 deleteNodeTwoTerminals(cNode);
                 break;
         }
-        
+
     }
 
     /**
@@ -669,11 +669,11 @@ public class BSTree<E extends Comparable<E>> {
      * @param father
      */
     private void deleteNodeOneTerminal(BSTNode target, BSTNode father) {
-        
+
         BSTNode grandChild = target.left != null
                 ? target.left
                 : target.right;
-        
+
         if (father.left == target) {
             father.left = grandChild;
         } else {
@@ -752,6 +752,40 @@ public class BSTree<E extends Comparable<E>> {
     }
 
     // ======================================
+    // = Rotate Methods (NO Parent)
+    // ======================================
+    public void rorateRight(BSTNode node) {
+
+        // If nothing on the left, return null since cannot not rotate
+        if (node.left == null) {
+            return;
+        }
+        
+        /**
+         * FA                           FA
+         *      90                          34
+         *  34        95           ->              90
+         *     35   91   100                    35     95
+         *                                           91   100
+         * Create a virtual moved subtree, attach all child of leftnode to its
+         * and attach the virtual subtree to the right after
+         */
+        BSTNode movedSubTree = new BSTNode(node.data);
+        movedSubTree.left = node.left.right;
+        movedSubTree.right = node.right;
+        
+        // Assign back the value to the rotated node
+        node.data = node.left.data;
+        node.left = node.left.left;
+        node.right = movedSubTree;
+        
+    }
+
+    public void rotateLeft(BSTNode node) {
+
+    }
+
+    // ======================================
     // = Utility Methods
     // ======================================
     /**
@@ -793,7 +827,7 @@ public class BSTree<E extends Comparable<E>> {
      * @param args
      */
     public static void main(String[] args) {
-        
+
         BSTree<Integer> tree = new BSTree<>();
         Integer[] arr = new Integer[]{5, 1, 9, 8, 7, 0, 2, 3, 4, 6};
 
@@ -801,7 +835,7 @@ public class BSTree<E extends Comparable<E>> {
         for (int i = 0; i < arr.length; i++) {
             tree.addNode(arr[i]);
         }
-        
+
         System.out.println(tree.breadthFirstTraversal());
 
         // Testing conducting a height-balanced tree
@@ -810,13 +844,13 @@ public class BSTree<E extends Comparable<E>> {
         for (int i = 0; i < arr.length; i++) {
             tree.addNode(list.get(i));
         }
-        
+
         printAlignedHorizontally(tree.root, "\t");
 
         // Testing Searching 
         System.out.println("Node 700: " + tree.search(700));
         System.out.println("Node 0: " + tree.search(0).data);
-        
+
         System.out.println("Preorder: " + tree.preOrderIteration(tree.root));
         System.out.println("Inorder: " + tree.inOrderIteration(tree.root));
         System.out.println("Postorder: " + tree.postOrderIteration(tree.root));
@@ -830,5 +864,11 @@ public class BSTree<E extends Comparable<E>> {
         // Checking delete node
         tree.deleteNodeByCopying(tree.search(6));
         printAlignedHorizontally(tree.root, "\t");
+        
+        // Checking the rotate left and right
+        BSTNode node = tree.search(5);
+        tree.rorateRight(node);
+        printAlignedHorizontally(tree.root, "\t");
+
     }
 }
