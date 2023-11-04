@@ -9,7 +9,7 @@ import tree.node.HeapNode;
 import utilities.HelperFunctions;
 
 /**
- * An array implementation of the heap tree
+ * A class to implement Binary Heap
  *
  * @author duyvu
  */
@@ -20,14 +20,14 @@ public class HeapTree {
     // ======================================
     private HeapNode[] buffer;
     private final int DEFAULT_SIZE = 1024;	// default size is 1024 bytes
-    private int length;
+    private int size;
 
     // ======================================
     // = Constructors
     // ======================================
     public HeapTree() {
-	buffer = new HeapNode[DEFAULT_SIZE];
-	length = 0;
+        buffer = new HeapNode[DEFAULT_SIZE];
+        size = 0;
     }
 
     // ======================================
@@ -36,40 +36,68 @@ public class HeapTree {
     /**
      * Add new data to the array including heaptified method
      *
-     * @param newData
+     * @param data
      */
-    public void addNode(Comparable newData) {
+    public void insert(Comparable data) {
 
-	// Create new node based on given data
-	HeapNode newNode = new HeapNode(newData);
+        // If the heap is full
+        if (size >= DEFAULT_SIZE) {
+            return;
+        }
 
-	// If the array is empty
-	if (length == 0) {
-	    buffer[0] = newNode;
-	} else {
-	    // Adding to the end then comparing the father
-	    /* e.g. 30 20 21 | 25 -> add 25 to the heap
-                     0  1  2    3
-                                newIdx
-				newData
-	     */
-	    // father = floor(index / 2) 
-	    int newNodeIdx = length;
+        // Create new node based on given data
+        HeapNode newNode = new HeapNode(data);
 
-	    // Keep pushing the idx for newData to the position upto the right
-	    // If data > father, then move down father
-	    while (newNodeIdx > 0
-		    && newData.compareTo(this.buffer[newNodeIdx / 2].data) > 0) {
-		this.buffer[newNodeIdx] = this.buffer[newNodeIdx / 2];		// Move the father less than the child to the right
-		newNodeIdx = newNodeIdx / 2;					// Go to the next father
-	    }
+        // If the array is empty
+        if (size == 0) {
+            buffer[0] = newNode;
+        } else {
+            // Adding to the end then comparing the father
+            /* e.g. 30 20 21 99 0| 25 -> add 25 to the heap
+             *       0  1  2  3 4  5
+             *                     newIdx
+             *                     data
+             *
+             * e.g. 30 20 21 99 0| 21 -> add 25 to the heap
+             *       0  1  2  3 4  5
+             *             newIdx
+             *                     data
+             * 
+             * e.g. 30 20 25 99 0| 21 -> add 25 to the heap
+             *       0  1  2  3 4  5
+             *             newIdx
+             *                     data
+             */
+            // father = floor(idxChild / 2) 
+            int newIdx = size;
 
-	    // Attach the newNode to the final newNodeIdx
-	    this.buffer[newNodeIdx] = newNode;
-	}
+            // If data > father, then move down father
+            while (newIdx > 0
+                    && data.compareTo(this.buffer[parentIdx(newIdx)].data) > 0) {
 
-	// Increate the length after adding
-	this.length++;
+                // Move the father less than the child to the right
+                // Go to the next father
+                buffer[newIdx] = buffer[parentIdx(newIdx)];
+                newIdx = parentIdx(newIdx);
+            }
+
+            // Attach the newNode to the final newIdx
+            this.buffer[newIdx] = newNode;
+        }
+
+        // Increate the size after adding
+        this.size++;
+    }
+
+    /**
+     * Build heap from the array
+     *
+     * @param arr
+     */
+    public void insertArr(Comparable... arr) {
+        for (int i = 0; i < arr.length; i++) {
+            insert(arr[i]);
+        }
     }
 
     // ======================================
@@ -78,63 +106,101 @@ public class HeapTree {
     /**
      * Delete A top of the heap
      *
-     * <br><br>Put the removedNode after the length of the array
+     * <br><br>Swap the first and last of the heap
+     * <br><br>Reduce the size - 1
+     * <br><br>Heapify the array by comparing the new root to its children
      *
-     * @param newData
      * @return
      */
     public HeapNode deleteNode() {
-	// If length is empty then return nothing
-	if (this.length == 0) {
-	    return null;
-	}
+        // If size is empty then return nothing
+        if (isEmpty()) {
+            return null;
+        }
 
-	// Remove the first root data of the array
-	HeapNode removedNode = new HeapNode(buffer[0].data);
-	this.buffer[0] = this.buffer[length - 1];   // Copy the last node to the root
+        // 1. Remove the first root data of the array
+        // 2. Deduct the length of array, and add the deletedNode to the size of the array
+        HeapNode removedNode = new HeapNode(buffer[0].data);
+        HelperFunctions.swap(buffer, 0, size - 1);
+        size--;
 
-	// After insertted the node. check the left and right child
-	// Stop the iteration after reaching the size
-	int currNewNodeIdx = 0;
-	int childNewNodeIdx = currNewNodeIdx * 2 + 1; // first child
+        // After insertted the node. check the left and right child
+        // Stop the iteration after reaching the size
+        int currParent = 0;
+        int largest = -1;
+        int left = -1;
+        int right = -1;
 
-	while (childNewNodeIdx < this.length) {
-	    // If child > first but second > child, then choose second
-	    if (buffer[currNewNodeIdx].data.compareTo(buffer[childNewNodeIdx].data) > 0
-		    && buffer[currNewNodeIdx].data.compareTo(buffer[childNewNodeIdx + 1].data) < 0) {
-		childNewNodeIdx++;
-	    }
+        while (true) {
 
-	    if (buffer[currNewNodeIdx].data.compareTo(buffer[childNewNodeIdx].data) < 0) {
-		HelperFunctions.swap(buffer, currNewNodeIdx, childNewNodeIdx);
+            /**
+             * e.g.
+             * parentIdx: 1 (default largestIdx)
+             * left : 1 * 2 + 1 =
+             */
+            largest = currParent;
+            left = leftIdx(currParent);
+            right = rightIdx(currParent);
 
-		// Current node now will be the child node
-		currNewNodeIdx = childNewNodeIdx;
-		childNewNodeIdx = currNewNodeIdx * 2;
-	    } else {
-		// If curr > both childrens then it's correct now 
-		break;
-	    }
-	}
+            // if left > largest and have left child, set to left
+            if (left < size && buffer[left].data.compareTo(buffer[largest].data) > 0) {
+                largest = left;
+            }
 
-	// Deduct the leng of array, and add the deletedNode 
-	// and put removedNode after the length of array in buffer
-	buffer[length] = removedNode;
-	length--;
+            // if right > largest and have right child, set to right
+            if (right < size && buffer[right].data.compareTo(buffer[largest].data) > 0) {
+                largest = right;
+            }
 
-	// Return the node after being deleted
-	return removedNode;
+            // If largest has change, maen we swap it
+            if (largest != currParent) {
+                HelperFunctions.swap(buffer, largest, currParent);
+                currParent = largest;
+            } else {
+
+                // If they are the same means parent is the largest now
+                break;
+            }
+        }
+
+        // Return the node after being deleted
+        return removedNode;
     }
+// ======================================
+// = Helper Methods
+// ======================================
 
-    // ======================================
-    // = Helper Methods
-    // ======================================
     /**
+     * Left child index
+     *
+     * @param i passed parent index
      *
      * @return
      */
-    public int size() {
-	return this.length;
+    private int leftIdx(int parentIdx) {
+        return 2 * parentIdx + 1;
+    }
+
+    /**
+     * Right child index
+     *
+     * @param i passed parent index
+     *
+     * @return
+     */
+    private int rightIdx(int parentIdx) {
+        return 2 * parentIdx + 2;
+    }
+
+    /**
+     * Return the parent index
+     *
+     * @param childIdx
+     *
+     * @return
+     */
+    private int parentIdx(int childIdx) {
+        return (childIdx - 1) / 2;
     }
 
     // ======================================
@@ -150,7 +216,7 @@ public class HeapTree {
      * @return
      */
     public boolean isEmpty() {
-	return this.length == 0;
+        return this.size == 0;
     }
 
     /**
@@ -161,11 +227,32 @@ public class HeapTree {
      * @param index
      */
     public void printInOrderTree(String prefix, HeapNode[] arr, int index) {
-	if (index < length && (arr[index] != null)) {
-	    printInOrderTree("\t" + prefix, arr, index * 2 + 2);
-	    System.out.println(prefix + arr[index].data.toString());
-	    printInOrderTree("\t" + prefix, arr, index * 2 + 1);
-	}
+        if (index < size && (arr[index] != null)) {
+            printInOrderTree("\t" + prefix, arr, rightIdx(index));
+            System.out.println(prefix + arr[index].data.toString());
+            printInOrderTree("\t" + prefix, arr, leftIdx(index));
+        }
+    }
+
+    public void printHeapSort(Comparable... arr) {
+        insertArr(arr);
+
+        printAll();
+        System.out.println("");
+        printInOrderTree("|___", buffer, 0);
+
+        while (size != 0) {
+            System.out.println("Delete Node: " + deleteNode().data);
+            System.out.println("------------------------------------");
+            printAll();
+            System.out.println("");
+            printInOrderTree("|___", buffer, 0);
+        }
+
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = buffer[i].data;
+            System.out.println(arr[i]);
+        }
     }
 
     /**
@@ -174,38 +261,35 @@ public class HeapTree {
      * @param args
      */
     public void printAll() {
-	for (int i = 0; i < length; i++) {
-	    System.out.print(buffer[i].data.toString() + " ");
-	}
+        for (int i = 0; i < size; i++) {
+            System.out.print(buffer[i].data.toString() + " ");
+        }
     }
 
     public static void main(String[] args) {
-	HeapTree tree = new HeapTree();
-	tree.addNode(1);
-	tree.addNode(10);
-	tree.addNode(200);
-	tree.addNode(2);
-	tree.addNode(2);
-	tree.addNode(0);
-	tree.addNode(99);
-	tree.addNode(97);
-	tree.addNode(99999);
+        HeapTree tree = new HeapTree();
 
-	// Before Delete
-	System.out.println("Tree size: " + tree.size());
-	tree.printInOrderTree("\t", tree.buffer, 0);
-	tree.printAll();
+        // Heapify
+        Integer[] arr = new Integer[]{99, 98, 97, 0, 10, 20, 30, 25, 5, 40, 35};
+//        tree.insertArr(arr);
+//
+//        tree.printInOrderTree("\t", tree.buffer, 0);
+//        tree.printAll();
+//        System.out.println("Tree size: " + tree.size);
+//
+//        // After Delete
+//        System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
+//        System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
+//        System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
+//        System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
+//        System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
+//        System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
+//        System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
+//        System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
 
-	// After Delete
-	System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
-	System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
-	System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
-	System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
-	System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
-	System.out.println("\n\nNode deleted: " + tree.deleteNode().data);
-
-	System.out.println("Tree size: " + tree.size());
-	tree.printInOrderTree("\t", tree.buffer, 0);
-	tree.printAll();
+        tree.printHeapSort(arr);
+//        tree.printInOrderTree("\t", tree.buffer, 0);
+//        tree.printAll();
+//        System.out.println("Tree size: " + tree.size);
     }
 }
