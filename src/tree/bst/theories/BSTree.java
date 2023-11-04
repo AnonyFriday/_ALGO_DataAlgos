@@ -782,7 +782,18 @@ public class BSTree<E extends Comparable<E>> {
     }
 
     public void rotateLeft(BSTNode node) {
-
+        if (node.right == null) {
+            return;
+        }
+        
+        BSTNode movedSubTree = new BSTNode(node.data);
+        movedSubTree.right = node.right.left;
+        movedSubTree.left = node.left;
+        
+        // Assign back the value to the rotated node
+        node.data = node.right.data;
+        node.left = movedSubTree;
+        node.right = node.right.right;
     }
 
     // ======================================
@@ -868,6 +879,7 @@ public class BSTree<E extends Comparable<E>> {
         // Checking the rotate left and right
         BSTNode node = tree.search(5);
         tree.rorateRight(node);
+        tree.rotateLeft(node);
         printAlignedHorizontally(tree.root, "\t");
 
     }
