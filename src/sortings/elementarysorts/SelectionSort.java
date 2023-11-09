@@ -9,7 +9,10 @@ import java.util.Objects;
 import utilities.HelperFunctions;
 
 /**
- *
+ * Selection Sort
+ * - Big O: N^2
+ * - Space: N
+ * - Auxiliary: 1
  * @author duyvu
  */
 public class SelectionSort {
@@ -35,6 +38,17 @@ public class SelectionSort {
 		HelperFunctions.swap(arr, iMax, i);
 	    }
 	}
+    }
+
+    // Getting the minimum index of the string
+    public static <E extends Comparable<E>> int getMinIndex(E arr[], int first, int last) {
+	int minIdx = first;
+	for (int i = first + 1; i <= last; i++) {
+	    if (arr[minIdx].compareTo(arr[i]) > 0) {
+		minIdx = i;
+	    }
+	}
+	return minIdx;
     }
 
     // Testing Selection Sort
