@@ -5,12 +5,16 @@
 package tree.heap.theories;
 
 import java.util.ArrayList;
-import tree.node.HeapNode;
 import utilities.HelperFunctions;
 
 /**
  * A class to implement Binary Heap
  *
+ * Heapsort
+ * - Left = 2 * father + 1
+ * - Right = 2 * father + 2
+ * - Father = Math.floor((child - 1) / 2)
+ * 
  * @author duyvu
  */
 public class HeapTree {
@@ -54,19 +58,19 @@ public class HeapTree {
         } else {
             // Adding to the end then comparing the father
             /* e.g. 30 20 21 99 0| 25 -> add 25 to the heap
-             *       0  1  2  3 4  5
-             *                     newIdx
-             *                     data
+             * 0 1 2 3 4 5
+             * newIdx
+             * data
              *
              * e.g. 30 20 21 99 0| 21 -> add 25 to the heap
-             *       0  1  2  3 4  5
-             *             newIdx
-             *                     data
-             * 
+             * 0 1 2 3 4 5
+             * newIdx
+             * data
+             *
              * e.g. 30 20 25 99 0| 21 -> add 25 to the heap
-             *       0  1  2  3 4  5
-             *             newIdx
-             *                     data
+             * 0 1 2 3 4 5
+             * newIdx
+             * data
              */
             // father = floor(idxChild / 2) 
             int newIdx = size;
@@ -166,9 +170,9 @@ public class HeapTree {
         // Return the node after being deleted
         return removedNode;
     }
-// ======================================
-// = Helper Methods
-// ======================================
+    // ======================================
+    // = Helper Methods
+    // ======================================
 
     /**
      * Left child index

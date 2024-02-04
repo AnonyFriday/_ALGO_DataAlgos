@@ -5,20 +5,19 @@
 package queue.theories;
 
 import list.theories.singly.Node;
-import list.theories.singly.SinglyTesting;
+import list.theories.singly.SinglyLinkedList;
 
 /**
  *
  * @author duyvu
  */
-public class QueueByLinkedList<E> implements QueueADT<E> {
+public class QueueByLinkedList<E extends Comparable<E>> implements QueueADT<E> {
 
-    private SinglyTesting<E> list = new SinglyTesting<>();
+    private SinglyLinkedList<E> list = new SinglyLinkedList<>();
 
     @Override
     public void enqueue(E x) {
-        Node node = new Node(x);
-        list.insertLast(node);
+        list.addLast(x);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class QueueByLinkedList<E> implements QueueADT<E> {
 
     @Override
     public boolean isEmpty() {
-        return list.isEmply();
+        return list.isEmpty();
     }
 
     @Override
@@ -50,5 +49,4 @@ public class QueueByLinkedList<E> implements QueueADT<E> {
     public void displayAll() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
 }

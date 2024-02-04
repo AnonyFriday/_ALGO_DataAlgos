@@ -5,7 +5,7 @@
 package stack.theories;
 
 import java.util.LinkedList;
-import list.theories.singly.SinglyTesting;
+import list.theories.singly.SinglyLinkedList;
 
 /**
  * Create a new design pattern

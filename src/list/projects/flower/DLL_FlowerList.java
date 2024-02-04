@@ -27,18 +27,6 @@ public class DLL_FlowerList {
     }
 
     // ====================================
-    // = Methods
-    // ====================================
-    /**
-     * Check if the list is null or not
-     *
-     * @return
-     */
-    public boolean isEmpty() {
-        return head == null;
-    }
-
-    // ====================================
     // = Create Methods
     // ====================================
     /**
@@ -96,7 +84,7 @@ public class DLL_FlowerList {
      * @return
      */
     public boolean addBeforeNode(DLL_Node p,
-                                 Flower f) {
+            Flower f) {
         if (this.isEmpty() || p == head) {
             return addFirst(f);
         } else {
@@ -105,9 +93,10 @@ public class DLL_FlowerList {
 
             // before <--> newNode <--> p
             before.next = newNode;
-            p.prev = newNode;
             newNode.prev = before;
+            p.prev = newNode;
             newNode.next = p;
+
         }
         return true;
     }
@@ -120,7 +109,7 @@ public class DLL_FlowerList {
      * @return true if adding successfully
      */
     public boolean addAfterNode(DLL_Node p,
-                                Flower f) {
+            Flower f) {
         if (this.isEmpty() || p == tail) {
             return addLast(f);
         } else {
@@ -230,7 +219,7 @@ public class DLL_FlowerList {
      * @param node: given node
      * @return a removed node
      */
-    public DLL_Node remove(DLL_Node node) {
+    private DLL_Node remove(DLL_Node node) {
         if (isEmpty()) {
             return null;
         }
@@ -261,22 +250,24 @@ public class DLL_FlowerList {
      * @return a removed node containing a flower name
      */
     public DLL_Node remove(String flowerName) {
-        // If empty then return nothing
-        if (isEmpty()) {
-            return null;
-        }
 
         // Search the node having the flower name first 
         DLL_Node removedNode = this.search(flowerName);
-        if (removedNode == head) {
-            return removeFirst();
-        }
-        if (removedNode == tail) {
-            return removeLast();
-        }
 
         // If removedNode is null than return null, else return the removed node
         return removedNode != null ? remove(removedNode) : null;
+    }
+
+    // ====================================
+    // = Utiltiy Methods
+    // ====================================
+    /**
+     * Check if the list is null or not
+     *
+     * @return
+     */
+    public boolean isEmpty() {
+        return head == null;
     }
 
     // ====================================

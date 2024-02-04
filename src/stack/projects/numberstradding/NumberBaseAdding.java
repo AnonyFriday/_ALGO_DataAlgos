@@ -114,7 +114,8 @@ public class NumberBaseAdding {
 	final String fullZeros = "^[0]+$";
 	final String leadingZeros = "^[0]+";
 
-	// 000000 -> 
+	// 000000 -> 0
+	// 000123 -> 123
 	if (number.matches(fullZeros)) {
 	    return number.trim().replaceAll(fullZeros, "0");
 	} else {

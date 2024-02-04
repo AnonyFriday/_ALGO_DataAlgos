@@ -49,13 +49,13 @@ public class SimpleQueue<E extends Comparable<E>> {
      *
      * @return
      */
-    public Node dequeue() {
+    public E dequeue() {
         if (isEmpty()) {
             return null;
         }
         Node pNode = this.head;
         head = head.nextNode;
-        return pNode;
+        return (E) pNode.getInfo();
     }
 
     /**
@@ -63,12 +63,12 @@ public class SimpleQueue<E extends Comparable<E>> {
      *
      * @return
      */
-    public Node front() {
+    public E front() {
         if (isEmpty()) {
             return null;
         }
         Node pNode = this.head;
-        return pNode;
+        return (E) pNode.getInfo();
     }
 
     public void clear() {

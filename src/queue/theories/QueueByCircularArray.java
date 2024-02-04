@@ -5,8 +5,8 @@
 package queue.theories;
 
 /**
- * A queue implemented by using circular array to overcome
- * the inefficient shifting of the traditional array
+ * A queue implemented by using circular array to overcome the inefficient
+ * shifting of the traditional array
  *
  *
  *
@@ -111,11 +111,11 @@ public class QueueByCircularArray<E> implements QueueADT<E> {
 
     public boolean isFull() {
         // first | | | | | last   
-        // | | | | | first | last | | 
+        // | | | | | last | first | | 
 
         // Old version using (read + 1) % size == front
-        return (front == 0 && rear == - 1) ||
-               front == rear + 1;
+        return (front == 0 && rear == size - 1)
+                || front == rear + 1;
     }
 
     @Override
@@ -167,3 +167,4 @@ public class QueueByCircularArray<E> implements QueueADT<E> {
         queue.displayAll();
     }
 }
+

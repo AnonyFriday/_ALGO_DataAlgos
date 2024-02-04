@@ -1,0 +1,98 @@
+//////////////////////////////////
+// What is Hash
+//////////////////////////////////
+
+Hash definition
+
+Hash function
+    A tool for hashing
+    Accepts input data (initial data) and an unique index is it's output index of a subset
+
+Hash Table
+    Data storage is used in hashing (chứa dữ liệu của kĩ thuật băm)
+
+Table-size
+    No. of subsets in the hash table
+
+//////////////////////////////////
+// Common Hash Functions
+//////////////////////////////////
+
+Perfect hash function
+    A subset contains 1 element only <- Ideal case
+ 
+The division method is the preferred choice (%, modulo)
+    Folding method
+    Mid-square method
+    Extraction method
+    Radix transformation method
+
+
+Array & Hash tables
+    Array: 
+        Does  not allow empty cell in between 2 or multiple value-filled cells
+    
+    Hash table
+        Allow empty cells in between value-filled cells
+        
+
+//////////////////////////////////
+// Why do you need hash function
+//////////////////////////////////
+
+To achieve Insert, Search, Delete at O(1) time
+
+//////////////////////////////////
+// COllision Resolution
+//////////////////////////////////
+
+Open Addressing Method
+    (put the object into the empty slot if the destinated slot has been taken)
+
+    Linear Probing
+        p(i) = i, 
+        h'(k) = (h(k) + i) mod TSize
+        
+    Seperate Chaining Method
+        Index of a linked list elements having the same value of hash function
+        
+    Coalesced Chaining
+        
+
+//////////////////////////////////
+// Recap the theory
+//////////////////////////////////
+
+MMU
+    to control data from cache to cpu and from cache to memory
+Cache
+
+
+1 đon vị truy xuất trên SSD là 1 block (blocked device)
+1 don vi truy xuat trên HDD la 1 sector (sector device)
+1 sector chuyen đổi tín hiệu 0 và 1
+
+Bucket Addressing được dùng để lưu data vào ổ đĩa
+    data -> hash(data) -> index -> buckets[index]
+
+tập hợp định bị đầu đọc ghi là directory
+
+1 cluster là 1 gụm sectors
+
+
+
+Unicode's tradeoff is to double the size for each char compared to ASCII code
+    When delivering on the network, the size is huge and might caause
+UTF8 
+    -> compress unicode from 2 byte to 1 byte
+    -> Saving Unicode is binary, not the text file anymore
+
+FileInputStream, File
+InputStreamReader
+BufferedReader
+
+
+
+
+
+

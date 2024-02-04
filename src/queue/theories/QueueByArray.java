@@ -4,7 +4,7 @@
  */
 package queue.theories;
 
-import arrays.theories.StaticArrayLab;
+import arrays.staticarray.theories.StaticArray;
 import java.util.Arrays;
 
 /**
@@ -15,7 +15,7 @@ import java.util.Arrays;
  * @author duyvu
  * @param <E>
  */
-public class QueueByArray<E> extends StaticArrayLab<E> implements QueueADT<E> {
+public class QueueByArray<E> extends StaticArray<E> implements QueueADT<E> {
 
     // Queue's Variable
     protected int head, tail;
@@ -26,7 +26,7 @@ public class QueueByArray<E> extends StaticArrayLab<E> implements QueueADT<E> {
     }
 
     public QueueByArray(int capacity,
-                        E... buffer) {
+            E... buffer) {
         super(capacity, buffer);
         head = tail = -1;
     }
@@ -96,5 +96,4 @@ public class QueueByArray<E> extends StaticArrayLab<E> implements QueueADT<E> {
 
         queue.displayAll();
     }
-
 }

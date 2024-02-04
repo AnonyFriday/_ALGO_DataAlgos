@@ -7,8 +7,8 @@ package tree.bst.projects;
 import static tree.bst.projects.MinimumValueInTree.getMinValue;
 import tree.bst.theories.BSTree;
 import tree.bst.theories.BSTree;
-import tree.node.BSTNode;
-import tree.node.Fish;
+import tree.bst.theories.BSTNode;
+import tree.bst.projects.aquariumfish.Fish;
 import static tree.bst.theories.BSTree.printAlignedHorizontally;
 
 /**

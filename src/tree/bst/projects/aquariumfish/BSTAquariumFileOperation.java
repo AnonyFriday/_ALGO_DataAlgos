@@ -14,7 +14,7 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import tree.node.BSTNode;
+import tree.bst.theories.BSTNode;
 
 /**
  *

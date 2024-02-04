@@ -6,7 +6,7 @@ package tree.bst.projects;
 
 import tree.bst.theories.BSTree;
 import tree.bst.theories.BSTree;
-import tree.node.BSTNode;
+import tree.bst.theories.BSTNode;
 import static tree.bst.theories.BSTree.printAlignedHorizontally;
 
 /**

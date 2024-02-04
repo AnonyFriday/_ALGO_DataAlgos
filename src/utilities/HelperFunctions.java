@@ -4,7 +4,7 @@
  */
 package utilities;
 
-import tree.node.HeapNode;
+import tree.heap.theories.HeapNode;
 
 /**
  *

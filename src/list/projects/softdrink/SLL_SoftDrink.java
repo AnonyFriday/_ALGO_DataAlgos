@@ -428,12 +428,12 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
         FileReader fr = null;
         BufferedReader bf = null;
         try {
-            fr = new FileReader(filename, Charset.defaultCharset());
+            fr = new FileReader(filename);
             bf = new BufferedReader(fr);
 
             // Reading a line (no empty line) and add to the linked list
             String line;
-            while ((line = bf.readLine()) != null && !line.isBlank()) {
+            while ((line = bf.readLine()) != null && !line.isEmpty()) {
                 this.addFirst(createObjectFromLine(line));
             }
 
@@ -461,7 +461,7 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
      * @throws IOException
      */
     private void visit_binF(RandomAccessFile f,
-                            SLL_Node node) throws IOException {
+            SLL_Node node) throws IOException {
         f.writeBytes(node.getData().toString() + "\r\n");
     }
 
@@ -473,7 +473,7 @@ public class SLL_SoftDrink implements FileHandling<SoftDrink> {
      * @throws IOException
      */
     private void visit_textF(PrintWriter f,
-                             SLL_Node node) throws IOException {
+            SLL_Node node) throws IOException {
         f.println(node.getData().toString());
 //        f.println("私は");
     }

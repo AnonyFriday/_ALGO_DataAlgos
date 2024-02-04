@@ -4,8 +4,6 @@
  */
 package tree.bst.theories;
 
-import tree.node.TNode;
-
 /**
  *
  * @author duyvu

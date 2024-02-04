@@ -16,8 +16,7 @@ import tree.bst.projects.MaximumValueInBTree;
 import tree.bst.projects.MinimumValueInTree;
 import static tree.bst.projects.aquariumfish.BSTAquariumFileOperation.BFS_file;
 import tree.bst.theories.BSTree;
-import tree.node.BSTNode;
-import tree.node.Fish;
+import tree.bst.theories.BSTNode;
 
 /**
  * The Aquarium Tree using Binary Search Tree as the storage
@@ -48,10 +47,11 @@ public class BSTAquarium extends BSTree<AquariumFish> {
      *
      * @param root
      * @param fish
+     *
      * @return
      */
     public BSTNode searchFishRecur(BSTNode root,
-                                   AquariumFish fish) {
+            AquariumFish fish) {
 
         // If root is null then return null
         if (root == null) {
@@ -75,6 +75,7 @@ public class BSTAquarium extends BSTree<AquariumFish> {
      * Searching the fish iteratively
      *
      * @param fish
+     *
      * @return
      */
     public BSTNode searchFishIterative(AquariumFish fish) {
@@ -107,52 +108,15 @@ public class BSTAquarium extends BSTree<AquariumFish> {
     // ======================================
     /**
      * Delete a fish by using coping technique
+     *
      * @param fish
-     * @return 
+     *
+     * @return
      */
     public BSTNode deleteFish(AquariumFish fish) {
-
-        // If empty then dont delete anything
-        if (this.isEmpty()) {
-            return null;
-        }
-
-        // Find the parent node for linking with grandchild
-        BSTNode fatherNode = null;
-        BSTNode deletedNode = root;
-
-        while (deletedNode != null) {
-
-            int key = fish.compareTo((AquariumFish) deletedNode.data);
-            if (key == 0) {
-                break; // deletedNode has been detected
-            } else {
-                // Tracking the fatherNode
-                fatherNode = deletedNode;
-                if (key < 0) {
-                    deletedNode = (BSTNode) deletedNode.left;
-                } else {
-                    deletedNode = (BSTNode) deletedNode.right;
-                }
-            }
-        }
-
-        // If not found then return null
-        if (deletedNode == null) {
-            return null;
-        }
-
-        // Check how many children of this node
-        // 2 options: delete by coping and delete by merging
-        int childs = countChildrenOfTerminal(deletedNode);
-
-        if (childs == 2) {
-            return super.deleteTwoChildByCoping(deletedNode);
-        } else if (childs == 1) {
-            return super.deleteOneChild(fatherNode, deletedNode);
-        } else {
-            return super.deleteZeroChild(fatherNode, deletedNode);
-        }
+        BSTNode node = search(fish);
+        super.deleteNodeByCopying(node);
+        return node;
     }
 
     // Testing 
@@ -171,7 +135,7 @@ public class BSTAquarium extends BSTree<AquariumFish> {
 
         // Testing Add
         aqua.addFishes(arr);
-        BSTree.print("\t", aqua.root);
+        BSTree.printAlignedHorizontally(aqua.root, "\t");
 
         // Testing Search Recursively
         System.out.println(aqua.searchFishRecur(aqua.root, new AquariumFish("K")).data);
@@ -188,7 +152,7 @@ public class BSTAquarium extends BSTree<AquariumFish> {
         System.out.println(aqua.deleteFish(new AquariumFish("E"))); // delete E (0 node)
         System.out.println(aqua.deleteFish(new AquariumFish("F"))); // delete G (1 node)
         System.out.println(aqua.deleteFish(new AquariumFish("K"))); // delete K (1 node)
-        BSTree.print("\t", aqua.root);
+        BSTree.printAlignedHorizontally(aqua.root, "\t");
 
         // Testing File
 //        BSTAquariumFileOperation.BFS_file(aqua.root);

@@ -25,6 +25,5 @@ public class BaseConverter {
         System.out.println(baseConverter(266, 8));
         System.out.println(baseConverter(266, 16));
         System.out.println(baseConverter(266, 24));
-
     }
 }

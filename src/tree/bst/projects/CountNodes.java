@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import tree.bst.theories.BSTree;
 import tree.bst.theories.BSTree;
-import tree.node.BSTNode;
+import tree.bst.theories.BSTNode;
 
 /**
  *

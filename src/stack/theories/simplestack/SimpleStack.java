@@ -45,7 +45,7 @@ public class SimpleStack<E extends Comparable<E>> {
      *
      * @return element being popped out
      */
-    public Node pop() {
+    public E pop() {
         if (isEmpty()) {
             return null;
         }
@@ -53,7 +53,7 @@ public class SimpleStack<E extends Comparable<E>> {
         // Return the top node
         Node topNode = this.head;
         this.head = topNode.nextNode;
-        return topNode;
+        return (E) topNode.getInfo();
     }
 
     /**
@@ -61,12 +61,12 @@ public class SimpleStack<E extends Comparable<E>> {
      *
      * @return
      */
-    public Node top() {
+    public E top() {
         if (isEmpty()) {
             return null;
         }
         Node topNode = this.head;
-        return topNode;
+        return (E) topNode.getInfo();
     }
 
     public void clear() {

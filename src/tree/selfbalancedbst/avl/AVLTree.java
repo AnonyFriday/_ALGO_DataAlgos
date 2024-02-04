@@ -5,8 +5,7 @@
 package tree.selfbalancedbst.avl;
 
 import tree.bst.theories.BSTree;
-import tree.node.AVLNode;
-import tree.node.BSTNode;
+import tree.bst.theories.BSTNode;
 
 /**
  * If Balance Factor in {-1, 0, 1} then the tree is balance If balance Factor out of the above scope then apply
@@ -32,7 +31,7 @@ public class AVLTree<T extends Comparable<T>> {
     // = Create Methods
     // ======================================
     private AVLNode addNode(AVLNode<T> node,
-                            T data) {
+            T data) {
 
         /**
          * 1. Insertion
@@ -130,10 +129,11 @@ public class AVLTree<T extends Comparable<T>> {
      * Calculate the balanceFactor of the currentNode
      *
      * @param root
+     *
      * @return return the balance factor of the tree
      */
     public int getBalance(AVLNode<T> leftRoot,
-                          AVLNode<T> rightRoot) {
+            AVLNode<T> rightRoot) {
         // Get the height of from the left and right subtree
         int lHeight = leftRoot == null ? 0 : leftRoot.height;
         int rHeight = rightRoot == null ? 0 : rightRoot.height;
@@ -147,6 +147,7 @@ public class AVLTree<T extends Comparable<T>> {
      *
      * @param root
      * @param passed node that is unbalanced
+     *
      * @return a new root node
      */
     public AVLNode leftRotation(AVLNode<T> root) {
@@ -169,6 +170,7 @@ public class AVLTree<T extends Comparable<T>> {
      * <br><br>Counting only three node starting from the unbalanced node
      *
      * @param root
+     *
      * @return
      */
     public AVLNode rightRotation(AVLNode<T> root) {
@@ -187,7 +189,7 @@ public class AVLTree<T extends Comparable<T>> {
     }
 
     public static void printAlignedHorizontally(AVLNode node,
-                                                String prefix) {
+            String prefix) {
 
         // Applying 
         if (node != null) {

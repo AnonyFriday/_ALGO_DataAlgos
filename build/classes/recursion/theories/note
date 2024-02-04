@@ -1,0 +1,10 @@
+=================================================
+= Recursion
+=================================================
+
+5 type of recursion
+- Head
+- Tail 
+- Tree (calling itself multiple time, e.g. binary, ternary, etc.)
+- Indirect
+- Nested (a parameter itself is the function)b

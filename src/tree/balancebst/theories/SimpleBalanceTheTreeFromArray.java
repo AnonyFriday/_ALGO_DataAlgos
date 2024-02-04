@@ -110,7 +110,7 @@ public abstract class SimpleBalanceTheTreeFromArray {
             convertInorder(node.right, inOrderList);
         }
     }
-
+    
     // Testing
     public static void main(String[] args) {
 
@@ -121,7 +121,7 @@ public abstract class SimpleBalanceTheTreeFromArray {
         BSTree tree = new BSTree();
         tree.addNodes(list);
 
-        // The tree is not constructBalancedBST yet
+        // The tree is not construct yet
         BSTree.printAlignedHorizontally(tree.root, "|__");
 
         // Construct the tree
